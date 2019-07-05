@@ -1,25 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/realtive_mainactivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    android:layout_height="match_parent">
 
-    <include
-        layout="@layout/app_bar_main"
+    <com.github.mzule.fantasyslide.FantasyDrawerLayout
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        <LinearLayout
+            android:id="@+id/l1_mainactivity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-</android.support.v4.widget.DrawerLayout>
+            <FrameLayout
+                android:id="@+id/mainactivity_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </FrameLayout>
+        </LinearLayout>
+
+        <com.github.mzule.fantasyslide.SideBar
+            android:id="@+id/leftSideBar"
+            android:layout_width="230dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/colorPrimary"
+            android:gravity="fill_vertical"
+            app:maxTranslationX="66dp">
+
+            <LinearLayout
+                android:id="@+id/userInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:gravity="center_horizontal"
+                android:onClick="onClick"
+                android:orientation="vertical">
+
+                <com.example.ecommerce.CircleImageView
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/d_user"
+                    app:civ_border_color="@color/menu_text_color"
+                    app:civ_border_width="2dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user"
+                    android:textColor="@color/menu_text_color"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/account_setting"
+                style="@style/MenuText"
+                android:drawableStart="@drawable/user1"
+                android:text="@string/account_setting" />
+
+            <TextView
+                android:id="@+id/category"
+                style="@style/MenuText"
+                android:drawableStart="@drawable/category_icon1"
+                android:text="@string/category" />
+
+            <TextView
+                android:id="@+id/cart"
+                style="@style/MenuText"
+                android:drawableStart="@drawable/cart"
+                android:text="@string/cart" />
+
+            <TextView
+                android:id="@+id/order_history"
+                style="@style/MenuText"
+                android:drawableStart="@drawable/circle"
+                android:text="@string/order_history" />
+
+            <TextView
+                android:id="@+id/notifications"
+                style="@style/MenuText"
+                android:drawableStart="@drawable/notification"
+                android:text="@string/notifications" />
+
+            <TextView
+                android:id="@+id/settings"
+                style="@style/MenuText"
+                android:drawableStart="@drawable/settings"
+                android:text="@string/settings" />
+
+            <TextView
+                android:id="@+id/rate_app"
+                style="@style/MenuText"
+                android:drawableStart="@drawable/wallet"
+                android:text="@string/rate_app" />
+        </com.github.mzule.fantasyslide.SideBar>
+
+        <com.github.mzule.fantasyslide.SideBar
+            android:id="@+id/rightSideBar"
+            android:layout_width="160dp"
+            android:layout_height="450dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/bg_right_bar"
+            android:gravity="center_vertical|right"
+            app:maxTranslationX="-33dp"
+            tools:ignore="RtlHardcoded">
+
+            <TextView
+                style="@style/MenuText"
+                android:drawableStart="@drawable/home"
+                android:text="@string/home" />
+
+            <TextView
+                style="@style/MenuText"
+                android:drawableStart="@drawable/male"
+                android:text="@string/for_men" />
+
+            <TextView
+                style="@style/MenuText"
+                android:drawableStart="@drawable/female"
+                android:text="@string/for_women" />
+
+            <TextView
+                style="@style/MenuText"
+                android:drawableStart="@drawable/kids"
+                android:text="@string/for_kids" />
+
+            <TextView
+                style="@style/MenuText"
+                android:drawableStart="@drawable/offers"
+                android:text="@string/offers" />
+
+            <TextView
+                style="@style/MenuText"
+                android:drawableStart="@drawable/wish_list"
+                android:text="@string/wishlist" />
+        </com.github.mzule.fantasyslide.SideBar>
+    </com.github.mzule.fantasyslide.FantasyDrawerLayout>
+
+    <TextView
+        android:id="@+id/tipView"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="20dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        tools:ignore="RtlHardcoded" />
+</RelativeLayout>

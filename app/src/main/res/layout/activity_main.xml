@@ -114,31 +114,37 @@
             tools:ignore="RtlHardcoded">
 
             <TextView
+                android:id="@+id/home"
                 style="@style/MenuText"
                 android:drawableStart="@drawable/home"
                 android:text="@string/home" />
 
             <TextView
+                android:id="@+id/formen"
                 style="@style/MenuText"
                 android:drawableStart="@drawable/male"
                 android:text="@string/for_men" />
 
             <TextView
+                android:id="@+id/forwomen"
                 style="@style/MenuText"
                 android:drawableStart="@drawable/female"
                 android:text="@string/for_women" />
 
             <TextView
+                android:id="@+id/forkids"
                 style="@style/MenuText"
                 android:drawableStart="@drawable/kids"
                 android:text="@string/for_kids" />
 
             <TextView
+                android:id="@+id/offers"
                 style="@style/MenuText"
                 android:drawableStart="@drawable/offers"
                 android:text="@string/offers" />
 
             <TextView
+                android:id="@+id/wishlist"
                 style="@style/MenuText"
                 android:drawableStart="@drawable/wish_list"
                 android:text="@string/wishlist" />

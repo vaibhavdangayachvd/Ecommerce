@@ -1,2 +1,3 @@
-include ':app', ':library'
+include ':app', ':library', ':cmlibrary'
 project(':library').projectDir = new File('library1')
+project(':cmlibrary').projectDir = new File('cmlibrary1')

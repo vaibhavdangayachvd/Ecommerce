@@ -52,6 +52,7 @@
                     app:civ_border_width="2dp" />
 
                 <TextView
+                    android:id="@+id/displayName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/user"

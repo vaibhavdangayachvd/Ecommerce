@@ -1,7 +1,7 @@
 package com.github.mzule.fantasyslide;
-
-import android.support.annotation.Nullable;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by CaoDongping on 9/7/16.

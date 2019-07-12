@@ -2,18 +2,23 @@ package com.example.ecommerce;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.ecommerce.helper.UserLogin;
 import com.github.mzule.fantasyslide.SideBar;
@@ -25,12 +30,27 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private UserLogin userLogin;
+    private LiveData<Boolean> loginObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        userLogin = new UserLogin(MainActivity.this);
+        final SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
+        userLogin = ViewModelProviders.of(MainActivity.this).get(UserLogin.class);
+        loginObserver = userLogin.getLoginObserver();
+        //Keep Track Of Login Status
+        loginObserver.observe(MainActivity.this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean == true) {
+                    Toast.makeText(MainActivity.this, "Hi User", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Hi Guest", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         final DrawerArrowDrawable indicator = new DrawerArrowDrawable(this);
         indicator.setColor(Color.WHITE);
@@ -48,6 +68,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userLogin.checkLoginStatus(MainActivity.this);
     }
 
     private void setListener() {

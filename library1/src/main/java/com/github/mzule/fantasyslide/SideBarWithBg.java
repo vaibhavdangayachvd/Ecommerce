@@ -2,9 +2,10 @@ package com.github.mzule.fantasyslide;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
+
+import androidx.drawerlayout.widget.DrawerLayout;
 
 /**
  * 封装 SideBar 以及 SideBarBgView,保证 SideBarBgView 可以展示在 SideBar 背后

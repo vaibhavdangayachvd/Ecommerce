@@ -3,32 +3,90 @@ package com.example.ecommerce.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public final class UserLogin implements Login {
-    private Context context;
-    public UserLogin(Context context)
-    {
-        this.context=context;
-    }
-    @Override
-    public boolean tryLogin(String username, String password) {
-        return false;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public final class UserLogin extends ViewModel {
+    private MutableLiveData<Boolean> isLoggedIn;
+
+    public UserLogin() {
+        isLoggedIn = new MutableLiveData<>();
     }
 
-    @Override
-    public boolean isLoggedIn() {
-        SharedPreferences preferences = context.getSharedPreferences("user",Context.MODE_PRIVATE);
-        return preferences.getBoolean("isLoggedIn",false);
+    //Try Login From Server
+    private void tryLogin(final Context context, final String username, final String password) {
+        String LOGIN_URL = "https://trustbuy.ml/api/login.php";
+        StringRequest request = new StringRequest(Request.Method.POST, LOGIN_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = parseJSON(response);
+                if (response.equals("ACCESS_GRANTED"))
+                    isLoggedIn.setValue(true);
+                else {
+                    isLoggedIn.setValue(false);
+                    SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.clear();
+                    editor.apply();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                isLoggedIn.setValue(false);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("username", username);
+                params.put("password", password);
+                return params;
+            }
+        };
+        RequestHelper.getInstance(context).addToRequestQueue(request);
     }
-    public void validateFromServer()
-    {
-        SharedPreferences preferences = context.getSharedPreferences("user",Context.MODE_PRIVATE);
-        String username=preferences.getString("username",null);
-        String password=preferences.getString("password",null);
-        if(!tryLogin(username,password))
-        {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
+
+    //Hit database for consistency
+    public void checkLoginStatus(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        if (preferences.getBoolean("isLoggedIn", false))
+            validateFromServer(context);
+        else
+            isLoggedIn.setValue(false);
+    }
+
+    //Provider Observer
+    public LiveData<Boolean> getLoginObserver() {
+        return isLoggedIn;
+    }
+
+    private void validateFromServer(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        String username = preferences.getString("username", null);
+        String password = preferences.getString("password", null);
+        tryLogin(context, username, password);
+    }
+
+    private String parseJSON(String json) {
+        String response = null;
+        try {
+            JSONObject obj = new JSONObject(json);
+            response = obj.getString("status");
+        } catch (Exception e) {
+        } finally {
+            return response;
         }
     }
 }

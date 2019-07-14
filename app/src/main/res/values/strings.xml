@@ -15,4 +15,6 @@
     <string name="account_setting">Account Setting</string>
     <string name="wishlist">wishlist</string>
     <string name="profile">Profile</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
 </resources>

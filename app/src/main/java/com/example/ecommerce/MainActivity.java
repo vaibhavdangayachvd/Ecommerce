@@ -16,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -31,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private UserLogin userLogin;
     private LiveData<Boolean> loginObserver;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fragment_call(new Home());
         final SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
         userLogin = ViewModelProviders.of(MainActivity.this).get(UserLogin.class);
         loginObserver = userLogin.getLoginObserver();
@@ -70,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void fragment_call(Fragment f){
+        FragmentManager manager=getSupportFragmentManager();
+        FragmentTransaction tr=manager.beginTransaction();
+        tr.replace(R.id.mainactivity_frame,f);
+        tr.commit();
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -146,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 drawerLayout.closeDrawer(GravityCompat.START);
             } else {

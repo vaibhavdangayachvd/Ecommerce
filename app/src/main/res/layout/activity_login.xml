@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:padding="50dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Login">
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter username"
+        android:inputType="textPersonName"
+        tools:ignore="Autofill,HardcodedText" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/username"
+        android:ems="10"
+        android:hint="Enter password"
+        android:inputType="textPassword"
+        tools:ignore="Autofill,HardcodedText" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:layout_below="@id/password"
+        android:text="Login"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/register"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/password"
+        android:text="Register"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/show_message"
+        android:layout_marginTop="80dp"
+        android:layout_below="@id/login"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
+</RelativeLayout>

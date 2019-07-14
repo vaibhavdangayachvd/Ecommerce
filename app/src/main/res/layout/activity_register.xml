@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="50dp"
+    android:layout_height="match_parent"
+    tools:context=".Register">
+
+    <TextView
+        android:id="@+id/Enter_First_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="First Name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/First_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/Enter_First_name"
+        android:ems="10"
+        android:inputType="textPersonName"
+        tools:ignore="Autofill,LabelFor" />
+    <TextView
+        android:id="@+id/Enter_Last_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last name"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/Enter_First_name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/Last_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/First_name"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/Enter_Last_name"
+        android:ems="10"
+        android:inputType="textPersonName"
+        tools:ignore="Autofill,LabelFor" />
+    <TextView
+        android:id="@+id/Enter_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/Enter_Last_name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Last_name"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/Enter_username"
+        android:ems="10"
+        android:inputType="textPersonName"
+        tools:ignore="Autofill,LabelFor" />
+    <TextView
+        android:id="@+id/Enter_email_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email ID"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/Enter_username"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/email_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/username"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/Enter_email_id"
+        android:ems="10"
+        android:inputType="textPersonName"
+        tools:ignore="Autofill,LabelFor,TextFields" />
+    <TextView
+        android:id="@+id/Enter_mobile_no."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mobile No."
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/Enter_email_id"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/mobile_no."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/email_id"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/Enter_mobile_no."
+        android:ems="10"
+        android:inputType="textPersonName"
+        tools:ignore="Autofill,LabelFor,TextFields" />
+    <TextView
+        android:id="@+id/Enter_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/Enter_mobile_no."
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mobile_no."
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/Enter_password"
+        android:ems="10"
+        android:layout_marginTop="10dp"
+        android:inputType="textPassword"
+        tools:ignore="Autofill,LabelFor,TextFields" />
+    <TextView
+        android:id="@+id/Enter_confirm_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm Password"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/Enter_password"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/confirm_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/Enter_confirm_password"
+        android:ems="10"
+        android:layout_marginTop="10dp"
+        android:inputType="textPassword"
+        tools:ignore="Autofill,LabelFor,TextFields" />
+    <Button
+        android:layout_width="wrap_content"
+        android:id="@+id/register"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="Register"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/Enter_confirm_password"
+        tools:ignore="HardcodedText" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/register"
+        />
+
+</RelativeLayout>

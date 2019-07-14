@@ -30,15 +30,16 @@ public final class UserLogin extends ViewModel {
         StringRequest request = new StringRequest(Request.Method.POST, LOGIN_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                response = parseJSON(response);
-                if (response.equals("ACCESS_GRANTED"))
-                    isLoggedIn.setValue(true);
-                else {
-                    isLoggedIn.setValue(false);
-                    SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.clear();
+                String[]output = parseJSON(response);
+                if (output[0].equals("ACCESS_GRANTED")) {
+                    SharedPreferences preferences=context.getSharedPreferences("user",Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=preferences.edit();
+                    editor.putString("name",output[1]);
                     editor.apply();
+                    isLoggedIn.setValue(true);
+                }
+                else {
+                    logout(context);
                 }
             }
         }, new Response.ErrorListener() {
@@ -57,12 +58,20 @@ public final class UserLogin extends ViewModel {
         };
         RequestHelper.getInstance(context).addToRequestQueue(request);
     }
-
+    public void logout(Context context)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+        isLoggedIn.setValue(false);
+    }
     //Hit database for consistency
     public void checkLoginStatus(Context context) {
         SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-        if (preferences.getBoolean("isLoggedIn", false))
+        if (preferences.getBoolean("isLoggedIn", false)) {
             validateFromServer(context);
+        }
         else
             isLoggedIn.setValue(false);
     }
@@ -79,11 +88,12 @@ public final class UserLogin extends ViewModel {
         tryLogin(context, username, password);
     }
 
-    private String parseJSON(String json) {
-        String response = null;
+    private String[] parseJSON(String json) {
+        String[] response = new String[2];
         try {
             JSONObject obj = new JSONObject(json);
-            response = obj.getString("status");
+            response[0] = obj.getString("status");
+            response[1]=obj.getString("firstName");
         } catch (Exception e) {
         } finally {
             return response;

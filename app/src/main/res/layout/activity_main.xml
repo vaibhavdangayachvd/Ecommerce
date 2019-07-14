@@ -44,6 +44,7 @@
                 android:orientation="vertical">
 
                 <com.example.ecommerce.CircleImageView
+                    android:id="@+id/displayPic"
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:layout_margin="10dp"

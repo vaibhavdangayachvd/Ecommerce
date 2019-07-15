@@ -26,7 +26,7 @@ public final class UserLogin extends ViewModel {
 
     //Try Login From Server
     private void tryLogin(final Context context, final String username, final String password) {
-        String LOGIN_URL = "https://trustbuy.ml/api/login.php";
+        String LOGIN_URL = URLContract.BASE_URL+"/api/login.php?forSessionCheck=true";
         StringRequest request = new StringRequest(Request.Method.POST, LOGIN_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -35,6 +35,7 @@ public final class UserLogin extends ViewModel {
                     SharedPreferences preferences=context.getSharedPreferences("user",Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor=preferences.edit();
                     editor.putString("name",output[1]);
+                    editor.putBoolean("hasDp",Integer.parseInt(output[2])!=0);
                     editor.apply();
                     isLoggedIn.setValue(true);
                 }
@@ -89,11 +90,12 @@ public final class UserLogin extends ViewModel {
     }
 
     private String[] parseJSON(String json) {
-        String[] response = new String[2];
+        String[] response = new String[3];
         try {
             JSONObject obj = new JSONObject(json);
             response[0] = obj.getString("status");
             response[1]=obj.getString("firstName");
+            response[2]=String.valueOf(obj.getInt("hasDp"));
         } catch (Exception e) {
         } finally {
             return response;

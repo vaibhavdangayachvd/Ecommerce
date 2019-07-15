@@ -12,9 +12,20 @@
     <string name="offers">Offers</string>
     <string name="cart">Cart</string>
     <string name="category">Category</string>
-    <string name="account_setting">Account Setting</string>
+    <string name="account_setting">Edit Profile</string>
     <string name="wishlist">wishlist</string>
     <string name="profile">Profile</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="save">Save</string>
+    <string name="upload_dp">Upload DP</string>
+    <string name="enter_new_mobile">Enter New Mobile</string>
+    <string name="enter_new_email">Enter New Email</string>
+    <string name="new_password">New Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="enter_new_last_name">Enter New Last Name</string>
+    <string name="enter_new_first_name">Enter New First Name</string>
+    <string name="username">Username</string>
+    <string name="login_register">Login/Register</string>
+    <string name="fill_all_fields">Fill all fields</string>
 </resources>

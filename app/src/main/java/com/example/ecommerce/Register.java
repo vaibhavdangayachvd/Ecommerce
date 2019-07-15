@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ecommerce.helper.RequestHelper;
+import com.example.ecommerce.helper.URLContract;
 
 import org.json.JSONObject;
 
@@ -65,7 +66,7 @@ public class Register extends AppCompatActivity {
         int sel=gender.getCheckedRadioButtonId();
         final String gen=String.valueOf(sel==R.id.male?1:0);
 
-        final String URL = "https://trustbuy.ml/api/register.php";
+        final String URL = URLContract.BASE_URL+"/api/register.php";
         registerRequest=new StringRequest(StringRequest.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

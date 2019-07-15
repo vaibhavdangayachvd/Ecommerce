@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:padding="50dp"
+    android:background="@drawable/register_background"
     android:layout_height="match_parent"
     tools:context=".Register">
 
@@ -111,7 +112,7 @@
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@id/Enter_mobile_no."
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="phone"
         tools:ignore="Autofill,LabelFor,TextFields" />
     <TextView
         android:id="@+id/Enter_password"
@@ -158,8 +159,11 @@
         android:inputType="textPassword"
         tools:ignore="Autofill,LabelFor,TextFields" />
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:id="@+id/register"
+        android:background="@drawable/register_button"
+        android:textSize="25sp"
+        android:textColor="#ffffff"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
         android:text="Register"
@@ -167,13 +171,26 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/gender"
         tools:ignore="HardcodedText" />
+
     <TextView
+        android:id="@+id/show_message"
+        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/register"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:id="@+id/Enter_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Enter_confirm_password"
+        android:text="Gender"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        tools:ignore="HardcodedText" />
 
     <RadioGroup
         android:id="@+id/gender"
@@ -181,18 +198,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:orientation="horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/Enter_gender"
         android:layout_centerInParent="true"
         android:layout_below="@id/Enter_confirm_password">
     <RadioButton
         android:id="@+id/male"
+        android:drawableStart="@drawable/male"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/male" />
+        android:layout_height="wrap_content"/>
 
     <RadioButton
         android:id="@+id/female"
+        android:drawableStart="@drawable/female"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/female" />
+        android:layout_height="wrap_content" />
     </RadioGroup>
 </RelativeLayout>

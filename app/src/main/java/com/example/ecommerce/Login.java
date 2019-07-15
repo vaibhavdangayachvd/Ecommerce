@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -113,5 +114,18 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+    }
+    private boolean validateFieldValues(){
+        if (username.getText().toString().matches("")){
+            Toast.makeText(this, "Enter username", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (password.getText().toString().matches("")){
+            Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -24,6 +25,7 @@ import java.util.Map;
 public class Register extends AppCompatActivity {
     private Button register;
     private EditText firstName,lastName,username,password,rePassword,email,mobile;
+    private TextView show;
     private RadioGroup gender;
     private StringRequest registerRequest;
     private ProgressDialog loading;
@@ -115,10 +117,49 @@ public class Register extends AppCompatActivity {
     }
     private boolean validateFieldValues()
     {
-
-         //complete this function by receiving values from field and validating them
-
-        return true;
+        if(firstName.getText().toString().matches("")){
+            Toast.makeText(this, "Enter First name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(lastName.getText().toString().matches("")){
+            Toast.makeText(this, "Enter Last name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(username.getText().toString().matches("")){
+            Toast.makeText(this, "Enter Username", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(email.getText().toString().matches("")){
+            Toast.makeText(this, "Enter Email ID", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(!email.getText().toString().contains("@") && !email.getText().toString().contains(".")){
+            Toast.makeText(this, "Invalid Email ID", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(mobile.getText().toString().matches("")){
+            Toast.makeText(this, "Enter Mobile Number", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(mobile.getText().toString().contains("-") || mobile.getText().toString().contains("*") || mobile.getText().toString().contains("/") || mobile.getText().toString().contains(".")){
+            Toast.makeText(this, "Invalid Mobile number", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(password.getText().toString().matches("")){
+            Toast.makeText(this, "Enter Password", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(rePassword.getText().toString().matches("")){
+            Toast.makeText(this, "Enter Confirm Password", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(gender.getCheckedRadioButtonId()==-1){
+            Toast.makeText(this, "Select gender", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else{
+           return true;
+    }
     }
     private void initViewComponents()
     {
@@ -131,5 +172,6 @@ public class Register extends AppCompatActivity {
         email=findViewById(R.id.email_id);
         mobile=findViewById(R.id.mobile_no);
         gender=findViewById(R.id.gender);
+        show=findViewById(R.id.show_message);
     }
 }

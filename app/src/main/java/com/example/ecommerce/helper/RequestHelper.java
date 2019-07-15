@@ -1,14 +1,8 @@
 package com.example.ecommerce.helper;
 
 import android.content.Context;
-
-import com.android.volley.Cache;
-import com.android.volley.Network;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.Volley;
 
 public final class RequestHelper {
@@ -22,7 +16,7 @@ public final class RequestHelper {
     }
     public static synchronized RequestHelper getInstance(Context context) {
         if (instance == null) {
-            instance = new RequestHelper(context);
+            instance = new RequestHelper(context.getApplicationContext());
         }
         return instance;
     }

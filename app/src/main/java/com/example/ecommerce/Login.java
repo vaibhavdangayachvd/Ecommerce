@@ -2,7 +2,6 @@ package com.example.ecommerce;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ecommerce.helper.RequestHelper;
+import com.example.ecommerce.helper.URLContract;
 
 import org.json.JSONObject;
 
@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity {
     private SharedPreferences preferences;
-    private final String URL="https://trustbuy.ml/api/login.php";
+    private final String URL= URLContract.BASE_URL+"/api/login.php";
     private TextView username,password,message;
     StringRequest requestLogin;
     @Override
@@ -65,7 +65,7 @@ public class Login extends AppCompatActivity {
                 final String user=username.getText().toString();
                 final String pass=password.getText().toString();
                 if(TextUtils.isEmpty(user) || TextUtils.isEmpty(pass))
-                    message.setText("Fill all fields");
+                    message.setText(getString(R.string.fill_all_fields));
                 else
                 {
                     requestLogin=new StringRequest(StringRequest.Method.POST, URL, new Response.Listener<String>() {
@@ -78,16 +78,19 @@ public class Login extends AppCompatActivity {
                                 String status = obj.getString("status");
                                 if(status.equals("ACCESS_GRANTED")) {
                                     String name= obj.getString("firstName");
+                                    String pass=obj.getString("passwordHash");
+                                    int hasDp=obj.getInt("hasDp");
                                     SharedPreferences.Editor editor=preferences.edit();
                                     editor.putString("username",user);
                                     editor.putString("password",pass);
                                     editor.putString("name",name);
+                                    editor.putBoolean("hasDp", hasDp != 0);
                                     editor.putBoolean("isLoggedIn",true);
                                     editor.apply();
                                     finish();
                                 }
                                 else
-                                    message.setText("Login Failed :(");
+                                    message.setText("Login Failed");
                             }
                             catch (Exception e) {
                                 message.setText("Server Response Error");

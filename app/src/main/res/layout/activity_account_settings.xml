@@ -15,8 +15,9 @@
         android:layout_height="0dp"
         android:layout_gravity="end"
         android:layout_weight="1.2"
-        android:text="@string/save"
-        android:textColor="#673AB7" />
+        android:text="save"
+        android:textColor="#673AB7"
+        tools:ignore="HardcodedText" />
 
     <ImageView
         android:id="@+id/image"
@@ -24,7 +25,8 @@
         android:layout_height="0dp"
         android:layout_weight="3"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/d_user" />
+        app:srcCompat="@drawable/d_user"
+        tools:ignore="ContentDescription" />
 
     <Button
         android:id="@+id/upload"
@@ -32,8 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="@string/upload_dp"
-        android:textColor="#F78E01" />
+        android:text="upload_dp"
+        android:textColor="#F78E01"
+        tools:ignore="HardcodedText" />
 
     <EditText
         android:id="@+id/firstName"
@@ -44,8 +47,9 @@
         android:gravity="center"
         android:inputType="textPersonName"
         android:text=""
-        android:hint="@string/enter_new_first_name"
-        tools:text="Vaibhav" />
+        android:hint="enter_new_first_name"
+        tools:text="Vaibhav"
+        tools:ignore="Autofill,HardcodedText" />
 
     <EditText
         android:id="@+id/lastName"
@@ -54,9 +58,10 @@
         android:layout_weight="1"
         android:ems="10"
         android:gravity="center"
-        android:hint="@string/enter_new_last_name"
+        android:hint="enter_new_last_name"
         android:inputType="textPersonName"
-        tools:text="Dangayach" />
+        tools:text="Dangayach"
+        tools:ignore="Autofill,HardcodedText" />
 
     <TextView
         android:id="@+id/username"
@@ -65,8 +70,9 @@
         android:layout_weight="1"
         android:textSize="20sp"
         android:gravity="center"
-        android:hint="@string/username"
-        tools:text="vaibhavdangayachvd" />
+        android:hint="username"
+        tools:text="vaibhavdangayachvd"
+        tools:ignore="HardcodedText" />
 
     <EditText
         android:id="@+id/oldPassword"
@@ -74,9 +80,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="@string/current_password"
+        android:hint="current_password"
         android:gravity="center"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        tools:ignore="Autofill,HardcodedText" />
 
     <EditText
         android:id="@+id/newPassword"
@@ -84,9 +91,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="@string/new_password"
+        android:hint="new_password"
         android:gravity="center"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        tools:ignore="Autofill,HardcodedText" />
 
     <EditText
         android:id="@+id/email"
@@ -95,9 +103,10 @@
         android:layout_weight="1"
         android:ems="10"
         android:gravity="center"
-        android:hint="@string/enter_new_email"
+        android:hint="enter_new_email"
         tools:text="vaibhavdangayachvd@gmail.com"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        tools:ignore="Autofill,HardcodedText" />
 
     <EditText
         android:id="@+id/mobile"
@@ -106,9 +115,10 @@
         android:layout_weight="1"
         android:ems="10"
         android:gravity="center"
-        android:hint="@string/enter_new_mobile"
+        android:hint="enter_new_mobile"
         tools:text="7877480410"
-        android:inputType="phone" />
+        android:inputType="phone"
+        tools:ignore="Autofill,HardcodedText" />
 
     <RadioGroup
         android:id="@+id/gender"
@@ -123,7 +133,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
-            android:text="@string/male" />
+            android:text="@string/male"
+            tools:ignore="RtlHardcoded" />
 
         <RadioButton
             android:id="@+id/female"

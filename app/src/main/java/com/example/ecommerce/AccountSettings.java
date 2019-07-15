@@ -83,8 +83,49 @@ public class AccountSettings extends AppCompatActivity {
     }
 
     private boolean validateFieldValues() {
-        //Complete this function like register
-        return true;
+        if (firstName.getText().toString().matches("")){
+            Toast.makeText(this, "Enter first name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (lastName.getText().toString().matches("")){
+            Toast.makeText(this, "Enter last name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (gender.getCheckedRadioButtonId()==-1){
+            Toast.makeText(this, "Select gender", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(mobile.getText().toString().matches("")){
+            Toast.makeText(this, "Enter Mobile Number", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(mobile.getText().toString().contains("-") || mobile.getText().toString().contains("*") || mobile.getText().toString().contains("/") || mobile.getText().toString().contains(".")){
+            Toast.makeText(this, "Invalid Mobile number", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(email.getText().toString().matches("")){
+            Toast.makeText(this, "Enter Email ID", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(!email.getText().toString().contains("@") && !email.getText().toString().contains(".")){
+            Toast.makeText(this, "Invalid Email ID", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(username.getText().toString().matches("")){
+            Toast.makeText(this, "Enter Username", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(oldPassword.getText().toString().matches("") && !newPassword.getText().toString().matches("")){
+            Toast.makeText(this, "Enter old Password", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(newPassword.getText().toString().matches("") && !oldPassword.getText().toString().matches("")){
+            Toast.makeText(this, "Enter new Password", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     private void updateUser() {

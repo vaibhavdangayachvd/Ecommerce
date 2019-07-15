@@ -66,7 +66,7 @@ public class Login extends AppCompatActivity {
                 final String user=username.getText().toString();
                 final String pass=password.getText().toString();
                 if(TextUtils.isEmpty(user) || TextUtils.isEmpty(pass))
-                    message.setText(getString(R.string.fill_all_fields));
+                    message.setText("Fill all fields");
                 else
                 {
                     requestLogin=new StringRequest(StringRequest.Method.POST, URL, new Response.Listener<String>() {
@@ -117,18 +117,5 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
-    }
-    private boolean validateFieldValues(){
-        if (username.getText().toString().matches("")){
-            Toast.makeText(this, "Enter username", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (password.getText().toString().matches("")){
-            Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        else {
-            return true;
-        }
     }
 }

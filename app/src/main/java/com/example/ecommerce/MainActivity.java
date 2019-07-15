@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUIForGuest() {
-        displayName.setText(getString(R.string.login_register));
+        displayName.setText("Login");
         displayPic.setImageResource(R.drawable.d_user);
     }
 

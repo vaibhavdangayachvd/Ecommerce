@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         String name = preferences.getString("name", "User");
         displayName.setText(String.format("Logout %s", name));
         if(preferences.getBoolean("hasDp", false))
-            Picasso.get().load(URLContract.BASE_URL+"/api/images/" + preferences.getString("username", "user") + ".jpeg").placeholder(R.drawable.loading).into(displayPic);
+            Picasso.get().load(URLContract.PROFILE_PIC_URL+"/" + preferences.getString("username", "user") + ".jpeg").placeholder(R.drawable.loading).error(R.drawable.d_user).into(displayPic);
     }
 
     private void updateUIForGuest() {

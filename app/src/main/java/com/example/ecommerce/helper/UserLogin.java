@@ -26,7 +26,7 @@ public final class UserLogin extends ViewModel {
 
     //Try Login From Server
     private void tryLogin(final Context context, final String username, final String password) {
-        String LOGIN_URL = URLContract.BASE_URL+"/api/login.php?forSessionCheck=true";
+        String LOGIN_URL = URLContract.LOGIN_URL+"?forSessionCheck=true";
         StringRequest request = new StringRequest(Request.Method.POST, LOGIN_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

@@ -11,8 +11,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -26,7 +24,6 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity {
     private SharedPreferences preferences;
-    private final String URL= URLContract.BASE_URL+"/api/login.php";
     private TextView username,password,message;
     StringRequest requestLogin;
     @Override
@@ -69,7 +66,7 @@ public class Login extends AppCompatActivity {
                     message.setText("Fill all fields");
                 else
                 {
-                    requestLogin=new StringRequest(StringRequest.Method.POST, URL, new Response.Listener<String>() {
+                    requestLogin=new StringRequest(StringRequest.Method.POST, URLContract.LOGIN_URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             try

@@ -129,8 +129,7 @@ public class AccountSettings extends AppCompatActivity {
     }
 
     private void updateUser() {
-        final String URL = URLContract.BASE_URL+"/api/updateuserdata.php";
-        request = new StringRequest(StringRequest.Method.POST, URL, new Response.Listener<String>() {
+        request = new StringRequest(StringRequest.Method.POST, URLContract.UPDATE_USER_DATA_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 loading.cancel();
@@ -208,7 +207,7 @@ public class AccountSettings extends AppCompatActivity {
         loading.setCancelable(false);
         loading.setMessage("Fetching Your Data...");
         loading.show();
-        final String URL = URLContract.BASE_URL+"/api/getuserdata.php?username=" + currentUser;
+        final String URL = URLContract.GET_USER_DATA_URL+"?username=" + currentUser;
         request = new StringRequest(StringRequest.Method.GET, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -294,7 +293,7 @@ public class AccountSettings extends AppCompatActivity {
         else
             gender.check(R.id.female);
         if (hasDp == 1) {
-            Picasso.get().load(URLContract.BASE_URL+"/api/images/" + currentUser + ".jpeg").placeholder(R.drawable.loading).into(image);
+            Picasso.get().load(URLContract.PROFILE_PIC_URL+"/" + currentUser + ".jpeg").placeholder(R.drawable.loading).into(image);
         }
     }
 

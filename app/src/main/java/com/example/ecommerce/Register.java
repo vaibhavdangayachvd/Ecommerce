@@ -66,8 +66,7 @@ public class Register extends AppCompatActivity {
         int sel=gender.getCheckedRadioButtonId();
         final String gen=String.valueOf(sel==R.id.male?1:0);
 
-        final String URL = URLContract.BASE_URL+"/api/register.php";
-        registerRequest=new StringRequest(StringRequest.Method.POST, URL, new Response.Listener<String>() {
+        registerRequest=new StringRequest(StringRequest.Method.POST,URLContract.REGISTER_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 loading.cancel();

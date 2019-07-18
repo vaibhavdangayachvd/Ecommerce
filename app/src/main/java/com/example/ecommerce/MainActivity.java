@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             }
         },true);
         //Call Fragment
-        fragment_call(new Home());
+        initial_load(new Home());
 
         displayName = findViewById(R.id.displayName);
         displayPic = findViewById(R.id.displayPic);
@@ -98,10 +98,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    public void fragment_call(Fragment f) {
+    private void initial_load(Fragment f){
         FragmentTransaction tr = manager.beginTransaction();
-        tr.replace(R.id.mainactivity_frame, f);
+        tr.replace(R.id.mainactivity_frame,f);
+        tr.commit();
+    }
+    private void fragment_call(Fragment f) {
+        FragmentTransaction tr = manager.beginTransaction();
+        tr.replace(R.id.mainactivity_frame, f).addToBackStack("main");
         tr.commit();
     }
 

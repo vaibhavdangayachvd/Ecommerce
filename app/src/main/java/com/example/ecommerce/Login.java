@@ -138,7 +138,7 @@ public class Login extends Fragment {
     {
         FragmentManager manager=getActivity().getSupportFragmentManager();
         FragmentTransaction tr = manager.beginTransaction();
-        tr.replace(R.id.mainactivity_frame,new Register());
+        tr.replace(R.id.mainactivity_frame,new Register()).addToBackStack("login");
         tr.commit();
     }
 }

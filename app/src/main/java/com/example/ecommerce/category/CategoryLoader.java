@@ -32,14 +32,12 @@ public final class CategoryLoader extends ViewModel {
             StringRequest categoryRequest = new StringRequest(StringRequest.Method.GET, URLContract.GET_ALL_CATEGORIES_URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    //loading.cancel();
                     hasChanges.setValue(parseJSON(response));
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    //loading.cancel();
-                    Toast.makeText(context, "Server Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Network Error", Toast.LENGTH_SHORT).show();
                     hasChanges.setValue(false);
                 }
             });

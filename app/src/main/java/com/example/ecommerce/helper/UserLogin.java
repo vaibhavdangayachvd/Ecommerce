@@ -18,21 +18,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class UserLogin extends ViewModel {
-    private MutableLiveData<Boolean> isLoggedIn;
 
-    public UserLogin() {
-        isLoggedIn = new MutableLiveData<>();
+    private MutableLiveData<Boolean>isLoggedIn;
+    private Context context;
+    private SharedPreferences preferences;
+    public UserLogin(Context context)
+    {
+        this.context=context.getApplicationContext();
+        preferences=this.context.getSharedPreferences("user",Context.MODE_PRIVATE);
+        isLoggedIn=new MutableLiveData<>();
     }
-
     //Try Login From Server
-    private void tryLogin(final Context context, final String username, final String password) {
+    private void Login(final String username, final String password) {
         String LOGIN_URL = URLContract.LOGIN_URL+"?forSessionCheck=true";
         StringRequest request = new StringRequest(Request.Method.POST, LOGIN_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 String[]output = parseJSON(response);
                 if (output[0].equals("ACCESS_GRANTED")) {
-                    SharedPreferences preferences=context.getSharedPreferences("user",Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor=preferences.edit();
                     editor.putString("name",output[1]);
                     editor.putBoolean("hasDp",Integer.parseInt(output[2])!=0);
@@ -40,13 +43,13 @@ public final class UserLogin extends ViewModel {
                     isLoggedIn.setValue(true);
                 }
                 else {
-                    logout(context);
+                    logout();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                isLoggedIn.setValue(false);
+                logout();
             }
         }) {
             @Override
@@ -59,34 +62,29 @@ public final class UserLogin extends ViewModel {
         };
         RequestHelper.getInstance(context).addToRequestQueue(request);
     }
-    public void logout(Context context)
+    public LiveData<Boolean> getLoginObserver()
     {
-        SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        return isLoggedIn;
+    }
+    public void logout()
+    {
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.apply();
         isLoggedIn.setValue(false);
     }
     //Hit database for consistency
-    public void checkLoginStatus(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-        if (preferences.getBoolean("isLoggedIn", false)) {
-            validateFromServer(context);
-        }
+    public void checkLoginStatus() {
+        if (preferences.getBoolean("isLoggedIn", false))
+            validateFromServer();
         else
             isLoggedIn.setValue(false);
     }
-
-    //Provider Observer
-    public LiveData<Boolean> getLoginObserver() {
-        return isLoggedIn;
-    }
-
-    private void validateFromServer(Context context) {
+    private void validateFromServer() {
         SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         String username = preferences.getString("username", null);
         String password = preferences.getString("password", null);
-        tryLogin(context, username, password);
+        Login(username, password);
     }
 
     private String[] parseJSON(String json) {
@@ -97,8 +95,8 @@ public final class UserLogin extends ViewModel {
             response[1]=obj.getString("firstName");
             response[2]=String.valueOf(obj.getInt("hasDp"));
         } catch (Exception e) {
-        } finally {
-            return response;
+            response[0]="ACCESS_DENIED";
         }
+        return response;
     }
 }

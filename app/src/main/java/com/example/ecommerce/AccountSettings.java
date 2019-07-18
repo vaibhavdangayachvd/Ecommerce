@@ -1,9 +1,12 @@
 package com.example.ecommerce;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,7 +17,9 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,7 +40,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AccountSettings extends AppCompatActivity {
+public class AccountSettings extends Fragment {
     private Button save, upload;
     private EditText firstName, lastName, oldPassword, newPassword, email, mobile;
     private TextView username;
@@ -47,12 +52,11 @@ public class AccountSettings extends AppCompatActivity {
     private Bitmap bitmap;
     private ProgressDialog loading;
     private final int REQUEST_CODE = 101;
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account_settings);
-        initViewComponents();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.activity_account_settings,container,false);
+        initViewComponents(view);
         loadExistingUserData();
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,11 +66,12 @@ public class AccountSettings extends AppCompatActivity {
                 startActivityForResult(getDp, REQUEST_CODE);
             }
         });
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (validateFieldValues()) {
-                    loading = new ProgressDialog(AccountSettings.this);
+                    loading = new ProgressDialog(getActivity());
                     loading.setMessage("Updating profile...");
                     loading.setCancelable(true);
                     loading.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -80,47 +85,47 @@ public class AccountSettings extends AppCompatActivity {
                 }
             }
         });
+        return view;
     }
-
     private boolean validateFieldValues() {
         if (firstName.getText().toString().matches("")){
-            Toast.makeText(this, "Enter first name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Enter first name", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (lastName.getText().toString().matches("")){
-            Toast.makeText(this, "Enter last name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Enter last name", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (gender.getCheckedRadioButtonId()==-1){
-            Toast.makeText(this, "Select gender", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Select gender", Toast.LENGTH_SHORT).show();
             return false;
         }
         if(mobile.getText().toString().matches("")){
-            Toast.makeText(this, "Enter Mobile Number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Enter Mobile Number", Toast.LENGTH_SHORT).show();
             return false;
         }
         if(mobile.getText().toString().contains("-") || mobile.getText().toString().contains("*") || mobile.getText().toString().contains("/") || mobile.getText().toString().contains(".")){
-            Toast.makeText(this, "Invalid Mobile number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Invalid Mobile number", Toast.LENGTH_SHORT).show();
             return false;
         }
         if(email.getText().toString().matches("")){
-            Toast.makeText(this, "Enter Email ID", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Enter Email ID", Toast.LENGTH_SHORT).show();
             return false;
         }
         if(!email.getText().toString().contains("@") && !email.getText().toString().contains(".")){
-            Toast.makeText(this, "Invalid Email ID", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Invalid Email ID", Toast.LENGTH_SHORT).show();
             return false;
         }
         if(username.getText().toString().matches("")){
-            Toast.makeText(this, "Enter Username", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Enter Username", Toast.LENGTH_SHORT).show();
             return false;
         }
         if(oldPassword.getText().toString().matches("") && !newPassword.getText().toString().matches("")){
-            Toast.makeText(this, "Enter old Password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Enter old Password", Toast.LENGTH_SHORT).show();
             return false;
         }
         if(newPassword.getText().toString().matches("") && !oldPassword.getText().toString().matches("")){
-            Toast.makeText(this, "Enter new Password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Enter new Password", Toast.LENGTH_SHORT).show();
             return false;
         }
         else{
@@ -161,7 +166,7 @@ public class AccountSettings extends AppCompatActivity {
                 return params;
             }
         };
-        RequestHelper.getInstance(AccountSettings.this).addToRequestQueue(request);
+        RequestHelper.getInstance(getActivity()).addToRequestQueue(request);
     }
 
     private String imageToString(Bitmap bitmap) {
@@ -172,38 +177,37 @@ public class AccountSettings extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE && resultCode == getActivity().RESULT_OK && data != null) {
             Uri result = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result);
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), result);
                 image.setImageBitmap(bitmap);
             } catch (Exception e) {
-                Toast.makeText(AccountSettings.this, "Image Load Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Image Load Error", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
-    private void initViewComponents() {
-        save = findViewById(R.id.save);
-        upload = findViewById(R.id.upload);
-        firstName = findViewById(R.id.firstName);
-        lastName = findViewById(R.id.lastName);
-        username = findViewById(R.id.username);
-        oldPassword = findViewById(R.id.oldPassword);
-        newPassword = findViewById(R.id.newPassword);
-        email = findViewById(R.id.email);
-        mobile = findViewById(R.id.mobile);
-        gender = findViewById(R.id.gender);
-        image = findViewById(R.id.image);
-        preferences = getSharedPreferences("user", MODE_PRIVATE);
+    private void initViewComponents(View v) {
+        save = v.findViewById(R.id.save);
+        upload = v.findViewById(R.id.upload);
+        firstName = v.findViewById(R.id.firstName);
+        lastName = v.findViewById(R.id.lastName);
+        username = v.findViewById(R.id.username);
+        oldPassword = v.findViewById(R.id.oldPassword);
+        newPassword = v.findViewById(R.id.newPassword);
+        email = v.findViewById(R.id.email);
+        mobile = v.findViewById(R.id.mobile);
+        gender = v.findViewById(R.id.gender);
+        image = v.findViewById(R.id.image);
+        preferences = v.getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
 
         currentUser = preferences.getString("username", null);
     }
 
     private void loadExistingUserData() {
         username.setText(currentUser);
-        loading = new ProgressDialog(AccountSettings.this);
+        loading = new ProgressDialog(getActivity());
         loading.setCancelable(false);
         loading.setMessage("Fetching Your Data...");
         loading.show();
@@ -221,7 +225,7 @@ public class AccountSettings extends AppCompatActivity {
                 dieWithServerError();
             }
         });
-        RequestHelper.getInstance(AccountSettings.this).addToRequestQueue(request);
+        RequestHelper.getInstance(getActivity()).addToRequestQueue(request);
     }
 
     private void parseUpdateResponse(String response) {
@@ -231,7 +235,7 @@ public class AccountSettings extends AppCompatActivity {
             if (status.equals("UPDATE_FAILED"))
                 dieWithServerError();
             else {
-                Toast.makeText(AccountSettings.this, status, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), status, Toast.LENGTH_SHORT).show();
                 updateSharedPreferences(obj);
             }
         } catch (Exception e) {
@@ -298,7 +302,10 @@ public class AccountSettings extends AppCompatActivity {
     }
 
     private void dieWithServerError() {
-        Toast.makeText(AccountSettings.this, "Server Error", Toast.LENGTH_SHORT).show();
-        finish();
+        Toast.makeText(getActivity(), "Server Error", Toast.LENGTH_SHORT).show();
+        FragmentManager manager=getActivity().getSupportFragmentManager();
+        FragmentTransaction tr = manager.beginTransaction();
+        tr.replace(R.id.mainactivity_frame,new Home());
+        tr.commit();
     }
 }

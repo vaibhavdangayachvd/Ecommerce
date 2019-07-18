@@ -60,7 +60,11 @@
                     android:textColor="@color/menu_text_color"
                     android:textSize="18sp" />
             </LinearLayout>
-
+            <TextView
+                android:id="@+id/homeNav"
+                style="@style/MenuText"
+                android:drawableStart="@drawable/home"
+                android:text="@string/home" />
             <TextView
                 android:id="@+id/account_setting"
                 style="@style/MenuText"
@@ -84,13 +88,6 @@
                 style="@style/MenuText"
                 android:drawableStart="@drawable/circle"
                 android:text="@string/order_history" />
-
-            <TextView
-                android:id="@+id/notifications"
-                style="@style/MenuText"
-                android:drawableStart="@drawable/notification"
-                android:text="@string/notifications" />
-
             <TextView
                 android:id="@+id/settings"
                 style="@style/MenuText"

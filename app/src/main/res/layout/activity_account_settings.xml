@@ -21,9 +21,10 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="match_parent"
+        android:layout_width="140dp"
         android:layout_height="0dp"
         android:layout_weight="3"
+        android:layout_gravity="center"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/d_user"
         tools:ignore="ContentDescription" />

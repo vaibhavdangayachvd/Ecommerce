@@ -1,14 +1,21 @@
 package com.example.ecommerce;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.android.volley.Response;
@@ -22,35 +29,36 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Login extends AppCompatActivity {
+public class Login extends Fragment {
     private SharedPreferences preferences;
     private TextView username,password,message;
     StringRequest requestLogin;
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        preferences=getSharedPreferences("user",MODE_PRIVATE);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.activity_login,container,false);
+        preferences=getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
 
-        username=findViewById(R.id.username);
-        password=findViewById(R.id.password);
-        message=findViewById(R.id.show_message);
+        username=view.findViewById(R.id.username);
+        password=view.findViewById(R.id.password);
+        message=view.findViewById(R.id.show_message);
 
-        Button login = findViewById(R.id.login);
-        Button register = findViewById(R.id.register);
+        Button login = view.findViewById(R.id.login);
+        Button register = view.findViewById(R.id.register);
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Login.this,Register.class));
-                finish();
+                gotoRegister();
             }
         });
 
         login.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-                final ProgressDialog loading=new ProgressDialog(Login.this);
+                final ProgressDialog loading=new ProgressDialog(getActivity());
                 loading.setCancelable(true);
                 loading.setMessage("Logging you in...");
                 loading.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -63,7 +71,10 @@ public class Login extends AppCompatActivity {
                 final String user=username.getText().toString();
                 final String pass=password.getText().toString();
                 if(TextUtils.isEmpty(user) || TextUtils.isEmpty(pass))
+                {
                     message.setText("Fill all fields");
+                    loading.cancel();
+                }
                 else
                 {
                     requestLogin=new StringRequest(StringRequest.Method.POST, URLContract.LOGIN_URL, new Response.Listener<String>() {
@@ -85,7 +96,7 @@ public class Login extends AppCompatActivity {
                                     editor.putBoolean("hasDp", hasDp != 0);
                                     editor.putBoolean("isLoggedIn",true);
                                     editor.apply();
-                                    finish();
+                                    gotoHome();
                                 }
                                 else
                                     message.setText("Login Failed");
@@ -110,9 +121,24 @@ public class Login extends AppCompatActivity {
                             return mParams;
                         }
                     };
-                    RequestHelper.getInstance(Login.this).addToRequestQueue(requestLogin);
+                    RequestHelper.getInstance(getActivity()).addToRequestQueue(requestLogin);
                 }
             }
         });
+        return view;
+    }
+    private void gotoHome()
+    {
+        FragmentManager manager=getActivity().getSupportFragmentManager();
+        FragmentTransaction tr = manager.beginTransaction();
+        tr.replace(R.id.mainactivity_frame,new Home());
+        tr.commit();
+    }
+    private void gotoRegister()
+    {
+        FragmentManager manager=getActivity().getSupportFragmentManager();
+        FragmentTransaction tr = manager.beginTransaction();
+        tr.replace(R.id.mainactivity_frame,new Register());
+        tr.commit();
     }
 }

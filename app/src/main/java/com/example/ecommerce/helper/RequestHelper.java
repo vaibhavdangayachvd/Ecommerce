@@ -1,5 +1,6 @@
 package com.example.ecommerce.helper;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -7,6 +8,7 @@ import com.android.volley.toolbox.Volley;
 
 public final class RequestHelper {
     private Context context;
+    @SuppressLint("StaticFieldLeak")//It is pointing to app context so no leak
     private static RequestHelper instance;
     private RequestQueue requestQueue;
     private RequestHelper(Context context)

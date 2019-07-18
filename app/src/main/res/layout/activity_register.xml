@@ -173,15 +173,6 @@
         tools:ignore="HardcodedText" />
 
     <TextView
-        android:id="@+id/show_message"
-        android:textSize="20sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/register"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
-
-    <TextView
         android:id="@+id/Enter_gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

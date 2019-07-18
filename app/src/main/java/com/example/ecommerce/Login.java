@@ -73,7 +73,7 @@ public class Login extends Fragment {
                 if(TextUtils.isEmpty(user) || TextUtils.isEmpty(pass))
                 {
                     message.setText("Fill all fields");
-                    loading.cancel();
+                    loading.hide();
                 }
                 else
                 {
@@ -82,7 +82,7 @@ public class Login extends Fragment {
                         public void onResponse(String response) {
                             try
                             {
-                                loading.cancel();
+                                loading.hide();
                                 JSONObject obj = new JSONObject(response);
                                 String status = obj.getString("status");
                                 if(status.equals("ACCESS_GRANTED")) {
@@ -108,7 +108,7 @@ public class Login extends Fragment {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            loading.cancel();
+                            loading.hide();
                             message.setText("Network Error");
                         }
                     })

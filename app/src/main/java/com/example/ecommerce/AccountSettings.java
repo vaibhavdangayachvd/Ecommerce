@@ -137,13 +137,13 @@ public class AccountSettings extends Fragment {
         request = new StringRequest(StringRequest.Method.POST, URLContract.UPDATE_USER_DATA_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                loading.cancel();
+                loading.hide();
                 parseUpdateResponse(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                loading.cancel();
+                loading.hide();
                 dieWithServerError();
             }
         }) {
@@ -215,13 +215,13 @@ public class AccountSettings extends Fragment {
         request = new StringRequest(StringRequest.Method.GET, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                loading.cancel();
+                loading.hide();
                 parseLoadResponse(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                loading.cancel();
+                loading.hide();
                 dieWithServerError();
             }
         });

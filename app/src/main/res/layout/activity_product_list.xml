@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
         android:orientation="horizontal">
 
         <Button
@@ -18,11 +18,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#ffffff"
+            android:background="#000000"
             android:gravity="center"
             android:text="Sort"
             android:textAllCaps="false"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText,NestedWeights,SpUsage" />
@@ -67,7 +67,7 @@
             android:id="@+id/empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No Products to display"
+            android:text="We are loading products"
             android:textColor="#000000"
             android:textSize="20sp"
             android:layout_centerHorizontal="true"

@@ -179,8 +179,6 @@ public class Register extends Fragment {
     private void gotoLogin()
     {
         FragmentManager manager=getActivity().getSupportFragmentManager();
-        FragmentTransaction tr = manager.beginTransaction();
-        tr.replace(R.id.mainactivity_frame,new Login());
-        tr.commit();
+        manager.popBackStack();
     }
 }

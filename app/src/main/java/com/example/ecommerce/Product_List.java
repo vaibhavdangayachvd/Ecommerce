@@ -7,15 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -23,23 +25,27 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.ecommerce.product.ProductAdaptor;
+import com.example.ecommerce.product.ProductItem;
 import com.example.ecommerce.product.ProductLoader;
 
 
 public class Product_List extends Fragment {
-    private final int PRICE=0;
-    private final int NAME=1;
-    private final int ASCENDING=2;
-    private final int DESCENDING=3;
+    private final int PRICE = 0;
+    private final int NAME = 1;
+    private final int ASCENDING = 2;
+    private final int DESCENDING = 3;
 
-    private ProductLoader loader;
+
+    private ProductLoader productLoader;
     private String category;
     private ListView productList;
     private ProductAdaptor adaptor;
     private ProgressBar progressBar;
-    private LiveData<Boolean> observer;
-    private Button sort,filter;
-    private int type=NAME;
+    private LiveData<Boolean> productObserver;
+    private Button sort, filter;
+    private int type = PRICE;
+    private String type_message_ascending = "Low-High";
+    private String type_message_descending = "High-Low";
     private int prevId = -1;
 
     @Nullable
@@ -49,81 +55,42 @@ public class Product_List extends Fragment {
         initComponents(view);
         setLoader();
         setObserver();
+        //Here because observer checks status by default and will stop the progress bar
+        progressBar.setVisibility(View.VISIBLE);
         setListScrollListener();
+        setListItemSelectListener();
         setSortListener();
         setFilterListener();
         return view;
     }
-    private void setFilterListener()
-    {
-        filter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-                builder.setTitle("Sort");
-                builder.setMessage("How you want to filter?");
-                builder.setCancelable(true);
-                builder.setPositiveButton("PRICE", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        type=PRICE;
-                    }
-                });
-                builder.setNegativeButton("NAME", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        type=NAME;
-                    }
-                });
-                builder.show();
-            }
-        });
+
+    private void initComponents(View view) {
+        Bundle bundle = getArguments();
+        category = bundle.getString("category");
+        sort = view.findViewById(R.id.sort);
+        filter = view.findViewById(R.id.filter);
+        productList = view.findViewById(R.id.productList);
+        progressBar = view.findViewById(R.id.progressBar);
+        RelativeLayout placeholder = view.findViewById(R.id.placeholder);
+        productList.setEmptyView(placeholder);
     }
-    private void setSortListener()
-    {
-        sort.setOnClickListener(new View.OnClickListener() {
+
+    private void setLoader() {
+        productLoader = ViewModelProviders.of(getActivity(), new ViewModelProvider.Factory() {
+            @NonNull
             @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-                builder.setTitle("Sort");
-                builder.setMessage("How you want to sort?");
-                builder.setCancelable(true);
-                if(type==PRICE) {
-                    builder.setPositiveButton("Low-High", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getActivity(), "Low to High", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    builder.setNegativeButton("High-Low", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getActivity(), "High To Low", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                else
-                {
-                    builder.setPositiveButton("A-Z", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getActivity(), "A to Z", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    builder.setNegativeButton("Z-A", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getActivity(), "Z to A", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                builder.show();
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new ProductLoader(getActivity());
             }
-        });
+        }).get(ProductLoader.class);
+        productLoader.setCategory(category);
+        productLoader.loadProducts();
+
     }
+
     private void setObserver() {
-        observer = loader.getProductObserver();
-        observer.observe(getActivity(), new Observer<Boolean>() {
+        productObserver = productLoader.getProductObserver();
+        productObserver.observe(getActivity(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean)
@@ -132,9 +99,20 @@ public class Product_List extends Fragment {
                     progressBar.setVisibility(View.GONE);
             }
         });
+
     }
-    private void setListScrollListener()
-    {
+
+
+    private void updateUI() {
+        progressBar.setVisibility(View.GONE);
+        if (productList.getAdapter() == null) {
+            adaptor = new ProductAdaptor(getActivity(), productLoader.getProducts(), category);
+            productList.setAdapter(adaptor);
+        } else
+            adaptor.notifyDataSetChanged();
+    }
+
+    private void setListScrollListener() {
         productList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -144,43 +122,88 @@ public class Product_List extends Fragment {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 int lastId = firstVisibleItem + visibleItemCount;
-                if (lastId == totalItemCount && lastId != prevId) {
+                if (totalItemCount != 0 && lastId == totalItemCount && lastId != prevId) {
                     prevId = lastId;
                     progressBar.setVisibility(View.VISIBLE);
-                    loader.loadProducts();
+                    productLoader.loadProducts();
                 }
             }
         });
     }
-    private void setLoader() {
-        loader = ViewModelProviders.of(getActivity(), new ViewModelProvider.Factory() {
-            @NonNull
+
+    private void setListItemSelectListener() {
+        productList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new ProductLoader(getActivity());
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ProductItem item = productLoader.getProductAt(position);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("item", item);
+                bundle.putString("category", category);
+                Product_View product_view = new Product_View();
+                product_view.setArguments(bundle);
+                gotoProductView(product_view);
             }
-        }).get(ProductLoader.class);
-        loader.setCategory(category);
+        });
     }
 
-    private void initComponents(View view) {
-        Bundle bundle = getArguments();
-        category = bundle.getString("category");
-        sort=view.findViewById(R.id.sort);
-        filter=view.findViewById(R.id.filter);
-        productList = view.findViewById(R.id.productList);
-        progressBar = view.findViewById(R.id.progressBar);
-
-        RelativeLayout placeholder = view.findViewById(R.id.placeholder);
-        productList.setEmptyView(placeholder);
+    private void setFilterListener() {
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Sort");
+                builder.setMessage("How you want to filter?");
+                builder.setCancelable(true);
+                builder.setPositiveButton("PRICE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        type = PRICE;
+                        type_message_ascending = "Low-High";
+                        type_message_descending = "High-Low";
+                    }
+                });
+                builder.setNegativeButton("NAME", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        type = NAME;
+                        type_message_ascending = "A-Z";
+                        type_message_descending = "Z-A";
+                    }
+                });
+                builder.show();
+            }
+        });
     }
 
-    private void updateUI() {
-        progressBar.setVisibility(View.GONE);
-        if (productList.getAdapter() == null) {
-            adaptor = new ProductAdaptor(getActivity(), loader.getProducts(), category);
-            productList.setAdapter(adaptor);
-        } else
-            adaptor.notifyDataSetChanged();
+    private void setSortListener() {
+        sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Sort");
+                builder.setMessage("How you want to sort?");
+                builder.setCancelable(true);
+                builder.setPositiveButton(type_message_ascending, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        productLoader.arrangeBy(type, ASCENDING);
+                    }
+                });
+                builder.setNegativeButton(type_message_descending, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        productLoader.arrangeBy(type, DESCENDING);
+                    }
+                });
+                builder.show();
+            }
+        });
+    }
+
+    private void gotoProductView(Fragment fragment) {
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentTransaction tr = manager.beginTransaction();
+        tr.replace(R.id.mainactivity_frame, fragment).addToBackStack(null);
+        tr.commit();
     }
 }

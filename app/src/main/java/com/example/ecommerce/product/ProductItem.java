@@ -1,11 +1,14 @@
 package com.example.ecommerce.product;
 
-public final class ProductItem{
+import java.io.Serializable;
+
+public final class ProductItem implements Serializable {
     private String id;
     private String name;
     private String description;
     private String price;
     private String image;
+    private String category;
     public ProductItem(String id,String name,String description,String price,String image)
     {
         this.name=name;

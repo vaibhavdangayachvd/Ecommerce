@@ -78,7 +78,7 @@ public class Category extends Fragment {
     {
         FragmentManager manager=getActivity().getSupportFragmentManager();
         FragmentTransaction tr = manager.beginTransaction();
-        tr.replace(R.id.mainactivity_frame,fragment).addToBackStack("categories");
+        tr.replace(R.id.mainactivity_frame,fragment).addToBackStack(null);
         tr.commit();
     }
 }

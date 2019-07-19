@@ -11,8 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:textColor="#000000"
         android:text="@string/our_categories"
-        android:textSize="30sp"
+        android:fontFamily="sans-serif-black"
+        android:textSize="34sp"
         android:textStyle="bold" />
 
     <ListView
@@ -20,6 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/textView2"
+        android:divider="@null"
+        android:dividerHeight="20dp"
         android:layout_marginTop="20dp" />
     <ProgressBar
         android:id="@+id/progress"

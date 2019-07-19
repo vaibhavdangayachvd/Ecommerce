@@ -96,7 +96,7 @@ public class Login extends Fragment {
                                     editor.putBoolean("hasDp", hasDp != 0);
                                     editor.putBoolean("isLoggedIn",true);
                                     editor.apply();
-                                    gotoHome();
+                                    gotoBack();
                                 }
                                 else
                                     message.setText("Login Failed");
@@ -127,12 +127,10 @@ public class Login extends Fragment {
         });
         return view;
     }
-    private void gotoHome()
+    private void gotoBack()
     {
         FragmentManager manager=getActivity().getSupportFragmentManager();
-        FragmentTransaction tr = manager.beginTransaction();
-        tr.replace(R.id.mainactivity_frame,new Home());
-        tr.commit();
+        manager.popBackStack();
     }
     private void gotoRegister()
     {

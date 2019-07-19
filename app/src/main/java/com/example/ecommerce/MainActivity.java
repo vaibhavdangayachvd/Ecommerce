@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.core.view.GravityCompat;
@@ -68,14 +70,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //Keeps track of login status
-        manager=getSupportFragmentManager();
+        manager = getSupportFragmentManager();
         manager.registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
             @Override
-            public void onFragmentPreAttached(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull Context context) {
-                super.onFragmentPreAttached(fm, f, context);
+            public void onFragmentViewCreated(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull View v, @Nullable Bundle savedInstanceState) {
+                super.onFragmentViewCreated(fm, f, v, savedInstanceState);
                 userLogin.checkLoginStatus();
             }
-        },true);
+        }, true);
         //Call Fragment
         initial_load(new Home());
 
@@ -99,14 +101,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void initial_load(Fragment f){
+
+    private void initial_load(Fragment f) {
         FragmentTransaction tr = manager.beginTransaction();
-        tr.replace(R.id.mainactivity_frame,f);
+        tr.replace(R.id.mainactivity_frame, f);
         tr.commit();
     }
+
     private void fragment_call(Fragment f) {
         FragmentTransaction tr = manager.beginTransaction();
-        tr.replace(R.id.mainactivity_frame, f).addToBackStack("main");
+        manager.popBackStack();
+        tr.replace(R.id.mainactivity_frame, f).addToBackStack(null);
         tr.commit();
     }
 
@@ -146,19 +151,28 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main,menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            //When menu is clicked
-            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                drawerLayout.closeDrawer(GravityCompat.START);
-            } else {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //When menu is clicked
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    drawerLayout.openDrawer(GravityCompat.START);
+                }
+                break;
+            case R.id.cart:
+                boolean isLoggedIn = preferences.getBoolean("isLoggedIn", false);
+                if (isLoggedIn)
+                    fragment_call(new Cart_List());
+                else
+                    fragment_call(new Login());
+                break;
         }
         return true;
     }
@@ -188,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.cart:
                 if (isLoggedIn)
-                    startActivity(new Intent(MainActivity.this, Cart_List.class));
+                    fragment_call(new Cart_List());
                 else
                     fragment_call(new Login());
                 break;
@@ -201,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.userInfo:
                 if (isLoggedIn) {
                     userLogin.logout();
-                    fragment_call(new Home());
+                    initial_load(new Home());
                     Toast.makeText(MainActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
                 } else
                     fragment_call(new Login());
@@ -210,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 fragment_call(new Category());
                 break;
             case R.id.homeNav:
-                fragment_call(new Home());
+                initial_load(new Home());
                 break;
             case R.id.settings:
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
@@ -237,5 +251,13 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "wishlist", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (manager.getBackStackEntryCount() == 0)
+            moveTaskToBack(true);
+        else
+            super.onBackPressed();
     }
 }

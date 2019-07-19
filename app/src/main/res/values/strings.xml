@@ -18,4 +18,6 @@
     <string name="female">Female</string>
     <string name="our_categories">Our Categories</string>
     <string name="home">Home</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="buy_now">Buy Now</string>
 </resources>

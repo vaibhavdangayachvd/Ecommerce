@@ -42,13 +42,6 @@
             tools:ignore="HardcodedText,SpUsage" />
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
 
     <ListView
         android:id="@+id/productList"
@@ -56,6 +49,13 @@
         android:layout_height="match_parent"
         android:layout_below="@id/header"
         android:layout_marginTop="20dp" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <RelativeLayout
         android:id="@+id/placeholder"

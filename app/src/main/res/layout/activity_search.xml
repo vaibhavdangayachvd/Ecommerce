@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".Search">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:drawableStart="@drawable/search_grey"
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Search Products"
+            android:textColorHint="#000000"
+            android:selectAllOnFocus="true"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            tools:ignore="Autofill,HardcodedText,InefficientWeight" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/hint"
+        android:layout_width="match_parent"
+        android:layout_height="326dp">
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/show_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:layout_marginTop="30dp"
+        tools:ignore="HardcodedText" />
+
+
+</LinearLayout>

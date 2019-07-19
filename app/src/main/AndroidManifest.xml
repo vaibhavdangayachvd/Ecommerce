@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".Cart_List"></activity>
+        <activity android:name=".Search"></activity>
+        <activity android:name=".Address" />
+        <activity android:name=".Cart_List" />
         <activity android:name=".Product_View" />
         <activity android:name=".Category" />
         <activity android:name=".AccountSettings" />

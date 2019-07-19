@@ -3,4 +3,6 @@
     <color name="colorPrimary">#324968</color>
     <color name="colorPrimaryDark">#324968</color>
     <color name="colorAccent">#DB392A</color>
+    <color name="green">#22F52A</color>
+    <color name="fluorescent">#e1ff00</color>
 </resources>

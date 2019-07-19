@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Login Provider
+
         userLogin = ViewModelProviders.of(MainActivity.this, new ViewModelProvider.Factory() {
             @NonNull
             @Override
@@ -180,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateUIForLoggedIn() {
         String name = preferences.getString("name", "User");
         displayName.setText(String.format("Logout %s", name));
+        displayName.setTextColor(getResources().getColorStateList(R.color.name_login));
         if (preferences.getBoolean("hasDp", false))
             Picasso.get().load(URLContract.PROFILE_PIC_URL + "/" + preferences.getString("username", "user") + ".jpeg").placeholder(R.drawable.loading).error(R.drawable.d_user).into(displayPic);
     }
@@ -187,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void updateUIForGuest() {
         displayName.setText("Login");
+        displayName.setTextColor(getResources().getColorStateList(R.color.not_login));
         displayPic.setImageResource(R.drawable.d_user);
     }
 
@@ -233,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "5 star", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.home:
-                Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+                initial_load(new Home());
                 break;
             case R.id.formen:
                 Toast.makeText(this, "for men", Toast.LENGTH_SHORT).show();

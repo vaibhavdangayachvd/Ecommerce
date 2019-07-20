@@ -1,77 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Home">
-    <androidx.appcompat.widget.SearchView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:id="@+id/search"
-        android:layout_height="0dp"
-        android:layout_weight=".1" />
-
-    <ScrollView
-        android:id="@+id/home_scroll"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
-
-            <ImageView
-                android:id="@+id/imageView2"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            tools:ignore="UselessParent">
+            <TextView
+                android:background="#ffffff"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/preview_home"
+                android:layout_height="wrap_content"
+                android:text="Search Products..."
+                android:drawableStart="@drawable/search_grey"
+                android:textSize="19sp"
+                android:textColor="#ED000000"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/preview"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
                 tools:ignore="ContentDescription" />
 
-            <RelativeLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/popular_backgroud"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="#25000000" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cList"
+                android:layout_width="fill_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="#25000000" />
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:orientation="vertical"
-                tools:ignore="ExtraText">
+                android:background="#5192EB"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="10"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/popular_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:text="Popular Products"
-                    android:textColor="#383a42"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    tools:ignore="HardcodedText" />
+                    <TextView
+                        android:layout_weight="7.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="Best Smartphones"
+                        android:textSize="24sp"
+                        android:textColor="#ffffff"
+                        tools:ignore="HardcodedText" />
 
-                <TextView
-                    android:id="@+id/popular_viewall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="View All"
-                    android:textAllCaps="false"
-                    android:textColor="#000000"
-                    android:textSize="17sp"
-                    tools:ignore="HardcodedText" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2.5"
+                        android:gravity="center"
+                        android:layout_height="match_parent"
+                        android:text="View More"
+                        android:background="#ffffff"
+                        android:textSize="15sp"
+                        android:textColor="#000000"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
 
-                <GridView
-                    android:id="@+id/popular_grid"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/smartphone_recyclerview"
+                    android:padding="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/popular_title"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="20dp"
-                    android:numColumns="2"
-                    tools:ignore="NestedScrolling" />
-            </RelativeLayout>
+                    android:nestedScrollingEnabled="false"
+                    android:clipToPadding="false"
+                    tools:ignore="RtlSymmetry" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/ac_banner"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/tv_banner"
+                        tools:ignore="ContentDescription" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/cloth_banner"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/wash_banner"
+                        tools:ignore="ContentDescription" />
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

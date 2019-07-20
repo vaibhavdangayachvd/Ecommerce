@@ -26,7 +26,6 @@ public class SideBar extends LinearLayout {
         super(context, attrs);
         init(attrs);
     }
-
     public SideBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs);
@@ -41,7 +40,6 @@ public class SideBar extends LinearLayout {
             a.recycle();
         }
     }
-
     void setTouchY(float y, float percent) {
         opened = percent == 1;
         int childCount = getChildCount();

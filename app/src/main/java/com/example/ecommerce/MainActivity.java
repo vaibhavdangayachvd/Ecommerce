@@ -41,7 +41,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private UserLogin userLogin;
-    private TextView displayName;
+    private TextView displayName,swipeLeft;
     private CircleImageView displayPic;
     private SharedPreferences preferences;
     private FragmentManager manager;
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         }, true);
         //Call Fragment
         initial_load(new Home());
-
+        swipeLeft=findViewById(R.id.swipe_icon);
         displayName = findViewById(R.id.displayName);
         displayPic = findViewById(R.id.displayPic);
         preferences = getSharedPreferences("user", MODE_PRIVATE);
@@ -126,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void apply(ViewGroup sideBar, View itemView, float touchY, float slideOffset, boolean isLeft) {
                 boolean hovered = itemView.isPressed();
+                if(slideOffset>0)
+                    swipeLeft.setVisibility(View.GONE);
+                else
+                    swipeLeft.setVisibility(View.VISIBLE);
                 if (hovered && lastHoverView != itemView) {
                     animateIn(itemView);
                     animateOut(lastHoverView);
@@ -148,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 translationX.start();
             }
         });
+
     }
 
     @Override

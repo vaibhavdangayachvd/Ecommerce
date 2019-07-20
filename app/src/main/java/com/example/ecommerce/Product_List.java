@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.ecommerce.helper.ViewHelper;
 import com.example.ecommerce.product.ProductAdaptor;
 import com.example.ecommerce.product.ProductItem;
 import com.example.ecommerce.product.ProductLoader;
@@ -85,7 +86,6 @@ public class Product_List extends Fragment {
         }).get(ProductLoader.class);
         productLoader.setCategory(category);
         productLoader.loadProducts();
-
     }
 
     private void setObserver() {
@@ -201,9 +201,6 @@ public class Product_List extends Fragment {
     }
 
     private void gotoProductView(Fragment fragment) {
-        FragmentManager manager = getActivity().getSupportFragmentManager();
-        FragmentTransaction tr = manager.beginTransaction();
-        tr.replace(R.id.mainactivity_frame, fragment).addToBackStack(null);
-        tr.commit();
+        ViewModelProviders.of(getActivity()).get(ViewHelper.class).loadView(fragment);
     }
 }

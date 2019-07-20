@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -23,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ecommerce.helper.RequestHelper;
 import com.example.ecommerce.helper.URLContract;
+import com.example.ecommerce.helper.ViewHelper;
 
 import org.json.JSONObject;
 
@@ -134,9 +136,6 @@ public class Login extends Fragment {
     }
     private void gotoRegister()
     {
-        FragmentManager manager=getActivity().getSupportFragmentManager();
-        FragmentTransaction tr = manager.beginTransaction();
-        tr.replace(R.id.mainactivity_frame,new Register()).addToBackStack("login");
-        tr.commit();
+        ViewModelProviders.of(getActivity()).get(ViewHelper.class).loadView(new Register());
     }
 }

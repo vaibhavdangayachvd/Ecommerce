@@ -59,6 +59,7 @@ public class Register extends Fragment {
         });
         return view;
     }
+
     private void registerNewUser()
     {
         final String first=firstName.getText().toString();

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.ecommerce.helper.URLContract;
 import com.example.ecommerce.helper.UserLogin;
+import com.example.ecommerce.helper.ViewHelper;
 import com.example.ecommerce.product.ProductItem;
 import com.squareup.picasso.Picasso;
 
@@ -117,9 +118,6 @@ public class Product_View extends Fragment {
     }
     private void gotoLogin()
     {
-        FragmentManager manager=getActivity().getSupportFragmentManager();
-        FragmentTransaction tr = manager.beginTransaction();
-        tr.replace(R.id.mainactivity_frame,new Login()).addToBackStack(null);
-        tr.commit();
+        ViewModelProviders.of(getActivity()).get(ViewHelper.class).loadView(new Login());
     }
 }

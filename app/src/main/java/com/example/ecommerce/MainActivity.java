@@ -2,8 +2,6 @@ package com.example.ecommerce;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,6 +30,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.ecommerce.helper.URLContract;
 import com.example.ecommerce.helper.UserLogin;
+import com.example.ecommerce.helper.ViewHelper;
 import com.github.mzule.fantasyslide.SideBar;
 import com.github.mzule.fantasyslide.Transformer;
 import com.squareup.picasso.Picasso;
@@ -44,14 +43,64 @@ public class MainActivity extends AppCompatActivity {
     private TextView displayName;
     private CircleImageView displayPic;
     private SharedPreferences preferences;
+    private ViewHelper viewLoader;
     private FragmentManager manager;
+    private LiveData<Boolean> loginObserver;
+    private LiveData<Fragment> viewObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Login Provider
+        setLoaders();
+        setObservers();
+        initComponents();
 
+        manager.registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
+            @Override
+            public void onFragmentViewCreated(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull View v, @Nullable Bundle savedInstanceState) {
+                super.onFragmentViewCreated(fm, f, v, savedInstanceState);
+                userLogin.checkLoginStatus();
+                viewLoader.registerView(f);
+            }
+
+            @Override
+            public void onFragmentPreCreated(@NonNull FragmentManager fm, @NonNull Fragment f, @Nullable Bundle savedInstanceState) {
+                super.onFragmentPreCreated(fm, f, savedInstanceState);
+
+            }
+
+        }, true);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        final DrawerArrowDrawable indicator = new DrawerArrowDrawable(this);
+        indicator.setColor(Color.WHITE);
+
+        getSupportActionBar().setHomeAsUpIndicator(indicator);
+
+        setTransformer();
+
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                if (((ViewGroup) drawerView).getChildAt(1).getId() == R.id.leftSideBar) {
+                    indicator.setProgress(slideOffset);
+                }
+            }
+        });
+    }
+
+    private void initComponents() {
+        manager = getSupportFragmentManager();
+        displayName = findViewById(R.id.displayName);
+        displayPic = findViewById(R.id.displayPic);
+        preferences = getSharedPreferences("user", MODE_PRIVATE);
+        drawerLayout = findViewById(R.id.drawerLayout);
+    }
+
+    private void setLoaders() {
+        //Login Loader
         userLogin = ViewModelProviders.of(MainActivity.this, new ViewModelProvider.Factory() {
             @NonNull
             @Override
@@ -59,8 +108,14 @@ public class MainActivity extends AppCompatActivity {
                 return (T) new UserLogin(MainActivity.this);
             }
         }).get(UserLogin.class);
-        //Observer
-        LiveData<Boolean> loginObserver = userLogin.getLoginObserver();
+
+        //View Loaders
+        viewLoader = ViewModelProviders.of(MainActivity.this).get(ViewHelper.class);
+    }
+
+    private void setObservers() {
+        //Login Observer
+        loginObserver = userLogin.getLoginObserver();
         loginObserver.observe(MainActivity.this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -70,34 +125,20 @@ public class MainActivity extends AppCompatActivity {
                     updateUIForGuest();
             }
         });
-        //Keeps track of login status
-        manager = getSupportFragmentManager();
-        manager.registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
-            @Override
-            public void onFragmentViewCreated(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull View v, @Nullable Bundle savedInstanceState) {
-                super.onFragmentViewCreated(fm, f, v, savedInstanceState);
-                userLogin.checkLoginStatus();
-            }
-        }, true);
-        //Call Fragment
-        initial_load(new Home());
 
-        displayName = findViewById(R.id.displayName);
-        displayPic = findViewById(R.id.displayPic);
-        preferences = getSharedPreferences("user", MODE_PRIVATE);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        final DrawerArrowDrawable indicator = new DrawerArrowDrawable(this);
-        indicator.setColor(Color.WHITE);
-        getSupportActionBar().setHomeAsUpIndicator(indicator);
-
-        setTransformer();
-        drawerLayout = findViewById(R.id.drawerLayout);
-        drawerLayout.setScrimColor(Color.TRANSPARENT);
-        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+        //View Observer
+        viewObserver = viewLoader.getObserver();
+        viewObserver.observe(MainActivity.this, new Observer<Fragment>() {
             @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                if (((ViewGroup) drawerView).getChildAt(1).getId() == R.id.leftSideBar) {
-                    indicator.setProgress(slideOffset);
+            public void onChanged(Fragment fragment) {
+                if (viewLoader.firstRun) {
+                    initial_load(fragment);
+                    viewLoader.firstRun = false;
+                } else {
+                    if (viewLoader.recreate)
+                        viewLoader.recreate = false;
+                    else
+                        fragment_call(fragment);
                 }
             }
         });
@@ -111,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void fragment_call(Fragment f) {
         FragmentTransaction tr = manager.beginTransaction();
-        manager.popBackStack();
         tr.replace(R.id.mainactivity_frame, f).addToBackStack(null);
         tr.commit();
     }
@@ -157,6 +197,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewLoader.preForRecreate();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -170,9 +216,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.cart:
                 boolean isLoggedIn = preferences.getBoolean("isLoggedIn", false);
                 if (isLoggedIn)
-                    fragment_call(new Cart_List());
+                    viewLoader.loadView(new Cart_List());
                 else
-                    fragment_call(new Login());
+                    viewLoader.loadView(new Login());
                 break;
         }
         return true;
@@ -199,32 +245,32 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.account_setting:
                 if (isLoggedIn)
-                    fragment_call(new AccountSettings());
+                    viewLoader.loadView(new AccountSettings());
                 else
-                    fragment_call(new Login());
+                    viewLoader.loadView(new Login());
                 break;
             case R.id.cart:
                 if (isLoggedIn)
-                    fragment_call(new Cart_List());
+                    viewLoader.loadView(new Cart_List());
                 else
-                    fragment_call(new Login());
+                    viewLoader.loadView(new Login());
                 break;
             case R.id.order_history:
                 if (isLoggedIn)
                     Toast.makeText(this, "order history", Toast.LENGTH_SHORT).show();
                 else
-                    fragment_call(new Login());
+                    viewLoader.loadView(new Login());
                 break;
             case R.id.userInfo:
                 if (isLoggedIn) {
                     userLogin.logout();
-                    initial_load(new Home());
+                    viewLoader.loadView(new Home());
                     Toast.makeText(MainActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
                 } else
-                    fragment_call(new Login());
+                    viewLoader.loadView(new Login());
                 break;
             case R.id.category:
-                fragment_call(new Category());
+                viewLoader.loadView(new Category());
                 break;
             case R.id.homeNav:
                 initial_load(new Home());
@@ -236,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "5 star", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.home:
-                initial_load(new Home());
+                viewLoader.loadView(new Home());
                 break;
             case R.id.formen:
                 Toast.makeText(this, "for men", Toast.LENGTH_SHORT).show();

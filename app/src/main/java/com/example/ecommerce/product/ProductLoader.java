@@ -32,7 +32,7 @@ public final class ProductLoader extends ViewModel {
 
     private final int OFFSET = 5;
     private int start = 0;
-    private String category;
+    private String category="none";
 
     private ArrayList<ProductItem> productList = new ArrayList<>();
     private MutableLiveData<Boolean> hasChanges = new MutableLiveData<>();
@@ -44,11 +44,15 @@ public final class ProductLoader extends ViewModel {
     }
 
     public void setCategory(String category) {
-        this.category = category;
-        productList.clear();
-        start = 0;
-        type=PRICE;
-        order=-1;
+        if(!this.category.equals(category)) {
+            this.category = category;
+            productList.clear();
+            start = 0;
+            type = PRICE;
+            order = -1;
+        }
+        else
+            hasChanges.setValue(true);
     }
     public ProductItem getProductAt(int index)
     {

@@ -13,10 +13,12 @@
         style="?attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:textSize="20sp"
+        android:background="@drawable/register_button"
         android:layout_gravity="end"
         android:layout_weight="1.2"
         android:text="save"
-        android:textColor="#673AB7"
+        android:textColor="#ffffff"
         tools:ignore="HardcodedText" />
 
     <ImageView
@@ -32,11 +34,14 @@
     <Button
         android:id="@+id/upload"
         style="?attr/buttonBarButtonStyle"
+        android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="upload_dp"
-        android:textColor="#F78E01"
+        android:textAllCaps="false"
+        android:background="@drawable/login_button"
+        android:text="Change Profile Picture"
+        android:textColor="#ffffff"
         tools:ignore="HardcodedText" />
 
     <EditText
@@ -81,8 +86,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="current_password"
         android:gravity="center"
+        android:hint="current password"
         android:inputType="textPassword"
         tools:ignore="Autofill,HardcodedText" />
 
@@ -92,8 +97,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="new_password"
         android:gravity="center"
+        android:hint="new password"
         android:inputType="textPassword"
         tools:ignore="Autofill,HardcodedText" />
 

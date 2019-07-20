@@ -40,7 +40,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private UserLogin userLogin;
-    private TextView displayName;
+    private TextView displayName,swipeLeft;
     private CircleImageView displayPic;
     private SharedPreferences preferences;
     private ViewHelper viewLoader;
@@ -97,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
         displayPic = findViewById(R.id.displayPic);
         preferences = getSharedPreferences("user", MODE_PRIVATE);
         drawerLayout = findViewById(R.id.drawerLayout);
+        swipeLeft=findViewById(R.id.swipe_icon);
+
     }
 
     private void setLoaders() {
@@ -166,6 +168,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void apply(ViewGroup sideBar, View itemView, float touchY, float slideOffset, boolean isLeft) {
                 boolean hovered = itemView.isPressed();
+                if(slideOffset>0)
+                    swipeLeft.setVisibility(View.GONE);
+                else
+                    swipeLeft.setVisibility(View.VISIBLE);
                 if (hovered && lastHoverView != itemView) {
                     animateIn(itemView);
                     animateOut(lastHoverView);
@@ -188,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 translationX.start();
             }
         });
+
     }
 
     @Override

@@ -103,13 +103,13 @@
 
         <com.github.mzule.fantasyslide.SideBar
             android:id="@+id/rightSideBar"
-            android:layout_width="160dp"
+            android:layout_width="170dp"
             android:layout_height="450dp"
             android:layout_gravity="end"
             android:layout_marginTop="50dp"
             android:background="@drawable/bg_right_bar"
             android:gravity="center_vertical|right"
-            app:maxTranslationX="-33dp"
+            app:maxTranslationX="-35dp"
             tools:ignore="RtlHardcoded">
 
             <TextView
@@ -151,15 +151,13 @@
     </com.github.mzule.fantasyslide.FantasyDrawerLayout>
 
     <TextView
-        android:id="@+id/tipView"
-        android:layout_width="160dp"
+        android:id="@+id/swipe_icon"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:background="@color/colorPrimary"
+        android:layout_centerVertical="true"
+        android:drawableStart="@drawable/swipe_left"
         android:gravity="center"
         android:padding="20dp"
-        android:textColor="@color/fluorescent"
-        android:textSize="16sp"
-        android:visibility="invisible"
         tools:ignore="RtlHardcoded" />
 </RelativeLayout>

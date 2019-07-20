@@ -3,6 +3,7 @@ package com.example.ecommerce;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,9 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ecommerce.cart.CartLoader;
 import com.example.ecommerce.helper.URLContract;
 import com.example.ecommerce.helper.UserLogin;
 import com.example.ecommerce.helper.ViewHelper;
@@ -32,9 +35,12 @@ public class Product_View extends Fragment {
     private TextView name, price, description;
     private String category;
     private ProductItem item;
-    Button buy,cart;
-    UserLogin userLoader;
-    LiveData<Boolean> userObserver;
+    private Button buy,cart;
+    private UserLogin userLoader;
+    private CartLoader cartLoader;
+    private LiveData<Boolean> userObserver;
+    private LiveData<Boolean> cartAddObserver;
+    private ProgressBar progressBar;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,6 +48,7 @@ public class Product_View extends Fragment {
         initComponents(view);
         setLoader();
         setObserver();
+        progressBar.setVisibility(View.GONE);
         return view;
     }
 
@@ -52,6 +59,7 @@ public class Product_View extends Fragment {
         description = view.findViewById(R.id.product_description);
         buy=view.findViewById(R.id.buyNow);
         cart=view.findViewById(R.id.addCart);
+        progressBar=view.findViewById(R.id.progress);
         Bundle bundle = getArguments();
         item = (ProductItem) bundle.getSerializable("item");
         category=bundle.getString("category");
@@ -70,10 +78,18 @@ public class Product_View extends Fragment {
             }
         }).get(UserLogin.class);
         userLoader.checkLoginStatus();
+
+        cartLoader = ViewModelProviders.of(getActivity(), new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new CartLoader(getActivity());
+            }
+        }).get(CartLoader.class);
     }
 
     private void setObserver() {
-
+        //Login Observer
         userObserver = userLoader.getLoginObserver();
         userObserver.observe(getActivity(), new Observer<Boolean>() {
             @Override
@@ -84,6 +100,16 @@ public class Product_View extends Fragment {
                     updateUIForGuest();
             }
         });
+
+        //Cart Observer
+        cartAddObserver=cartLoader.getCartAddObserver();
+        cartAddObserver.observe(getActivity(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+
     }
     private void updateUIForLogin() {
         buy.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +122,8 @@ public class Product_View extends Fragment {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"Added to cart",Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.VISIBLE);
+                cartLoader.addToCart(item.getId());
             }
         });
     }

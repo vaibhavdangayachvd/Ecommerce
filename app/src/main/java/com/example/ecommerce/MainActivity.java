@@ -264,7 +264,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.userInfo:
                 if (isLoggedIn) {
                     userLogin.logout();
-                    viewLoader.loadView(new Home());
                     Toast.makeText(MainActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
                 } else
                     viewLoader.loadView(new Login());
@@ -273,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
                 viewLoader.loadView(new Category());
                 break;
             case R.id.homeNav:
-                initial_load(new Home());
+                viewLoader.loadView(new Home());
                 break;
             case R.id.settings:
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();

@@ -14,6 +14,10 @@ public final class URLContract {
     public static final String UPDATE_USER_DATA_URL = BASE_URL + "/updateuserdata.php";
     public static final String GET_ALL_CATEGORIES_URL = BASE_URL + "/getallcategories.php";
     public static final String GET_PRODUCTS_BY_CATEGORY_URL = BASE_URL + "/getproductsbycategory.php";
+    public static final String GET_PRODUCTS_FROM_CART = BASE_URL + "/getproductsfromcart.php";
+    public static final String ADD_PRODUCT_TO_CART = BASE_URL + "/addproducttocart.php";
+    public static final String REMOVE_PRODUCT_FROM_CART = BASE_URL + "/removeproductfromcart.php";
+
 
     //Images
     public static final String PROFILE_PIC_URL = BASE_URL + "/" + IMAGE_FOLDER_NAME + "/" + PROFILE_FOLDER_NAME;

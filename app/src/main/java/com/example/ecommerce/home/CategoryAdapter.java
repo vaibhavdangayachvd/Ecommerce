@@ -1,4 +1,4 @@
-package com.example.ecommerce;
+package com.example.ecommerce.home;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,50 +9,43 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ecommerce.R;
+
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by trending design on 15/3/19.
- */
-public class SmartPhoneAdapter extends RecyclerView.Adapter<SmartPhoneAdapter.MyViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
 
     Context context;
-    private List<Favourite> OfferList;
+    private ArrayList<Favourite2> OfferList;
     boolean showingfirst = true;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView image,like;
-        TextView title,price;
+        TextView title;
 
         public MyViewHolder(View view) {
             super(view);
-
-            image = (ImageView)view.findViewById(R.id.image);
-            title = (TextView) view.findViewById(R.id.title);
-            price = (TextView) view.findViewById(R.id.price);
+            title = (TextView) view.findViewById(R.id.category_title);
         }
     }
 
-    public SmartPhoneAdapter(Context context, List<Favourite> offerList) {
+    public CategoryAdapter(Context context, ArrayList<Favourite2> offerList) {
         this.OfferList = offerList;
         this.context = context;
     }
 
     @Override
-    public SmartPhoneAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CategoryAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_home, parent, false);
-        return new SmartPhoneAdapter.MyViewHolder(itemView);
+                .inflate(R.layout.item_category, parent, false);
+        return new CategoryAdapter.MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
-        final Favourite lists = OfferList.get(position);
-        holder.image.setImageResource(lists.getImage());
+        final Favourite2 lists = OfferList.get(position);
         holder.title.setText(lists.getTitle());
-        holder.price.setText(lists.getPrice());
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,7 +53,6 @@ public class SmartPhoneAdapter extends RecyclerView.Adapter<SmartPhoneAdapter.My
             }
         });
     }
-
     @Override
     public int getItemCount() {
         return OfferList.size();

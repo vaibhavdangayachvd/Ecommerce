@@ -30,6 +30,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.ecommerce.helper.URLContract;
 import com.example.ecommerce.helper.UserLogin;
 import com.example.ecommerce.helper.ViewHelper;
+import com.example.ecommerce.home.Home;
 import com.github.mzule.fantasyslide.SideBar;
 import com.github.mzule.fantasyslide.Transformer;
 import com.squareup.picasso.Picasso;

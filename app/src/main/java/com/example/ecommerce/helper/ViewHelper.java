@@ -1,13 +1,11 @@
 package com.example.ecommerce.helper;
 
-import android.util.Log;
-
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.ecommerce.Home;
+import com.example.ecommerce.home.Home;
 
 public final class ViewHelper extends ViewModel {
     MutableLiveData<Fragment> observer=new MutableLiveData<>();

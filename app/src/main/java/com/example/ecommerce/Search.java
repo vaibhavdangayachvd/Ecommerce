@@ -33,7 +33,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
 public class Search extends Fragment {
     private EditText search;
     private ListView hint;

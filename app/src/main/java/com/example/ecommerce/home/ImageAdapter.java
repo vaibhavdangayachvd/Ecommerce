@@ -1,4 +1,4 @@
-package com.example.ecommerce;
+package com.example.ecommerce.home;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -6,6 +6,8 @@ import android.widget.ImageView;
 
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import com.example.ecommerce.R;
 
 public class ImageAdapter extends PagerAdapter {
     Context mContext;
@@ -20,8 +22,7 @@ public class ImageAdapter extends PagerAdapter {
     }
 
     private int[] sliderImageId = new int[]{
-            R.drawable.preview_home, R.drawable.ac_banner, R.drawable.popular_backgroud,R.drawable.wash_banner, R.drawable.tv_banner,
-    };
+            R.drawable.preview_1, R.drawable.preview_2, R.drawable.preview_3};
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {

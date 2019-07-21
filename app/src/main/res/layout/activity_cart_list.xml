@@ -8,7 +8,7 @@
         android:id="@+id/cartList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/footer"></ListView>
+        android:layout_above="@id/footer" />
     <LinearLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"

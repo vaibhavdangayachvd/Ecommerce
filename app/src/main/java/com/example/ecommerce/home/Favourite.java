@@ -1,4 +1,4 @@
-package com.example.ecommerce;
+package com.example.ecommerce.home;
 
 /**
  * Created by trending design on 15/3/19.

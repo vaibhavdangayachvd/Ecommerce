@@ -9,13 +9,11 @@
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:drawableStart="@drawable/search_grey"
         android:ems="10"
         android:hint="Search Products"
         android:imeOptions="actionDone"
         android:inputType="text"
-        android:selectAllOnFocus="true"
         android:textColorHint="#000000"
         tools:ignore="Autofill,HardcodedText,InefficientWeight" />
 
@@ -23,7 +21,8 @@
         android:id="@+id/hint"
         android:layout_below="@id/search"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+    </ListView>
     <TextView
         android:id="@+id/placeholder"
         android:layout_width="wrap_content"

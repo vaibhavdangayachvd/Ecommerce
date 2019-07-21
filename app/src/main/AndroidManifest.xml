@@ -11,20 +11,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        tools:ignore="AllowBackup,ExtraText,GoogleAppIndexingWarning">
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".Search"></activity>
-        <activity android:name=".Address" />
-        <activity android:name=".Cart_List" />
-        <activity android:name=".Product_View" />
-        <activity android:name=".Category" />
-        <activity android:name=".AccountSettings" />
-        <activity android:name=".Register" />
-        <activity android:name=".Login" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

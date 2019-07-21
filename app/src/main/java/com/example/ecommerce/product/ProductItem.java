@@ -8,7 +8,6 @@ public final class ProductItem implements Serializable {
     private String description;
     private String price;
     private String image;
-    private String category;
     public ProductItem(String id,String name,String description,String price,String image)
     {
         this.name=name;

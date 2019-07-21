@@ -18,6 +18,7 @@ public final class URLContract {
     public static final String ADD_PRODUCT_TO_CART = BASE_URL + "/addproducttocart.php";
     public static final String REMOVE_PRODUCT_FROM_CART = BASE_URL + "/removeproductfromcart.php";
     public static final String UPDATE_PRODUCT_IN_CART = BASE_URL + "/updateproductincart.php";
+    public static final String SEARCH_PRODUCTS = BASE_URL + "/searchproducts.php";
 
 
     //Images

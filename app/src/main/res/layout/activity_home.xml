@@ -17,15 +17,17 @@
             android:orientation="horizontal"
             android:layout_margin="10dp"
             tools:ignore="UselessParent">
+
             <TextView
-                android:background="#ffffff"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Search Products..."
-                android:drawableStart="@drawable/search_grey"
-                android:textSize="19sp"
-                android:textColor="#ED000000"
-                tools:ignore="HardcodedText" />
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:drawableStart="@drawable/search_grey"
+            android:text="Search Products..."
+            android:textColor="#ED000000"
+            android:textSize="19sp"
+            tools:ignore="HardcodedText" />
 
         </LinearLayout>
     </LinearLayout>

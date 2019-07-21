@@ -3,6 +3,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.TextView;
+
+import com.example.ecommerce.helper.ViewHelper;
 
 import java.util.ArrayList;
 
@@ -29,6 +33,7 @@ public class Home extends Fragment {
     private ArrayList<Favourite> favouriteModelClasses1;
     ArrayList<Integer> product_images;
     ArrayAdapter<String> product_name;
+    TextView search;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,6 +42,13 @@ public class Home extends Fragment {
         best.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         best.setItemAnimator(new DefaultItemAnimator());
         favouriteModelClasses1 = new ArrayList<>();
+        search=v.findViewById(R.id.search);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewModelProviders.of(getActivity()).get(ViewHelper.class).loadView(new Search());
+            }
+        });
 
         for (int i = 0; i < image1.length; i++) {
             Favourite beanClassForRecyclerView_contacts = new Favourite(image1[i],title1[i],price1[i]);

@@ -22,6 +22,7 @@
     <string name="buy_now">Buy Now</string>
     <string name="select_prompt">Select State</string>
     <string name="checkout">Checkout</string>
+    <string name="no_result_found">No Result Found</string>
     <string-array name="states">
         <item>Andhra Pradesh</item>
         <item>Arunachal Pradesh</item>

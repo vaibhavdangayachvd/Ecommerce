@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
                     viewLoader.loadView(new Login());
                 break;
             case R.id.search:
-                Toast.makeText(MainActivity.this,"Under Construction",Toast.LENGTH_SHORT).show();
+                viewLoader.loadView(new Search());
                 break;
             case R.id.action_notifications:
                 Toast.makeText(MainActivity.this,"Under Construction",Toast.LENGTH_SHORT).show();

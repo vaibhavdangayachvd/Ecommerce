@@ -7,8 +7,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 public final class RequestHelper {
-    private Context context;
-    @SuppressLint("StaticFieldLeak")//It is pointing to app context so no leak
+    private Context context;//It is pointing to app context so no leak
+    @SuppressLint("StaticFieldLeak")
     private static RequestHelper instance;
     private RequestQueue requestQueue;
     private RequestHelper(Context context)

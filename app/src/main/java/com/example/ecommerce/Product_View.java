@@ -2,11 +2,7 @@ package com.example.ecommerce;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -35,12 +31,14 @@ public class Product_View extends Fragment {
     private TextView name, price, description;
     private String category;
     private ProductItem item;
-    private Button buy,cart;
+    private Button buy, cart;
     private UserLogin userLoader;
     private CartLoader cartLoader;
     private LiveData<Boolean> userObserver;
     private LiveData<Boolean> cartAddObserver;
+    private Observer<Boolean> cartObserverHelper;
     private ProgressBar progressBar;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,17 +55,29 @@ public class Product_View extends Fragment {
         name = view.findViewById(R.id.product_name);
         price = view.findViewById(R.id.product_price);
         description = view.findViewById(R.id.product_description);
-        buy=view.findViewById(R.id.buyNow);
-        cart=view.findViewById(R.id.addCart);
-        progressBar=view.findViewById(R.id.progress);
+        buy = view.findViewById(R.id.buyNow);
+        cart = view.findViewById(R.id.addCart);
+        progressBar = view.findViewById(R.id.progress);
+
         Bundle bundle = getArguments();
+
         item = (ProductItem) bundle.getSerializable("item");
-        category=bundle.getString("category");
+        category = bundle.getString("category");
+
         Picasso.get().load(URLContract.PRODUCT_PIC_URL + "/" + category + "/" + item.getImage()).placeholder(R.drawable.loading).error(R.drawable.error).into(image);
         name.setText(item.getName());
+
         price.setText("Rs." + item.getPrice() + " /-");
         description.setText(item.getDescription());
+
+        cartObserverHelper = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                progressBar.setVisibility(View.GONE);
+            }
+        };
     }
+
     private void setLoader() {
 
         userLoader = ViewModelProviders.of(getActivity(), new ViewModelProvider.Factory() {
@@ -89,33 +99,29 @@ public class Product_View extends Fragment {
     }
 
     private void setObserver() {
+        cartAddObserver = cartLoader.getCartAddObserver();
         //Login Observer
         userObserver = userLoader.getLoginObserver();
-        userObserver.observe(getActivity(), new Observer<Boolean>() {
+        userObserver.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                if (aBoolean)
+                if (aBoolean) {
+                    cartAddObserver.observe(getViewLifecycleOwner(), cartObserverHelper);
                     updateUIForLogin();
-                else
+                } else {
+                    if (cartAddObserver.hasObservers())
+                        cartAddObserver.removeObserver(cartObserverHelper);
                     updateUIForGuest();
+                }
             }
         });
-
-        //Cart Observer
-        cartAddObserver=cartLoader.getCartAddObserver();
-        cartAddObserver.observe(getActivity(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                progressBar.setVisibility(View.GONE);
-            }
-        });
-
     }
+
     private void updateUIForLogin() {
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"Bought",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Bought", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -135,7 +141,6 @@ public class Product_View extends Fragment {
                 gotoLogin();
             }
         });
-
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,8 +148,8 @@ public class Product_View extends Fragment {
             }
         });
     }
-    private void gotoLogin()
-    {
+
+    private void gotoLogin() {
         ViewModelProviders.of(getActivity()).get(ViewHelper.class).loadView(new Login());
     }
 }

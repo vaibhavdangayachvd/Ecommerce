@@ -16,8 +16,6 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -56,8 +54,7 @@ public class Product_List extends Fragment {
         initComponents(view);
         setLoader();
         setObserver();
-        //Here because observer checks status by default and will stop the progress bar
-        progressBar.setVisibility(View.VISIBLE);
+
         setListScrollListener();
         setListItemSelectListener();
         setSortListener();
@@ -73,6 +70,13 @@ public class Product_List extends Fragment {
         productList = view.findViewById(R.id.productList);
         progressBar = view.findViewById(R.id.progressBar);
         RelativeLayout placeholder = view.findViewById(R.id.placeholder);
+        Button home=view.findViewById(R.id.goto_home);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewModelProviders.of(getActivity()).get(ViewHelper.class).loadView(new Home());
+            }
+        });
         productList.setEmptyView(placeholder);
     }
 
@@ -90,7 +94,7 @@ public class Product_List extends Fragment {
 
     private void setObserver() {
         productObserver = productLoader.getProductObserver();
-        productObserver.observe(getActivity(), new Observer<Boolean>() {
+        productObserver.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean)

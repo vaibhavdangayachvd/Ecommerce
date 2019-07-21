@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager manager;
     private LiveData<Boolean> loginObserver;
     private LiveData<Fragment> viewObserver;
+    private Thread hideSwipeLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,29 @@ public class MainActivity extends AppCompatActivity {
         setLoaders();
         setObservers();
         initComponents();
+        setManagerLifeCycleCallbacks();
 
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        final DrawerArrowDrawable indicator = new DrawerArrowDrawable(this);
+        indicator.setColor(Color.WHITE);
+
+        getSupportActionBar().setHomeAsUpIndicator(indicator);
+
+        setTransformer();
+
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+
+        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                if (((ViewGroup) drawerView).getChildAt(1).getId() == R.id.leftSideBar) {
+                    indicator.setProgress(slideOffset);
+                }
+            }
+        });
+    }
+    private void setManagerLifeCycleCallbacks()
+    {
         manager.registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
             @Override
             public void onFragmentViewCreated(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull View v, @Nullable Bundle savedInstanceState) {
@@ -71,26 +93,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }, true);
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        final DrawerArrowDrawable indicator = new DrawerArrowDrawable(this);
-        indicator.setColor(Color.WHITE);
-
-        getSupportActionBar().setHomeAsUpIndicator(indicator);
-
-        setTransformer();
-
-        drawerLayout.setScrimColor(Color.TRANSPARENT);
-        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                if (((ViewGroup) drawerView).getChildAt(1).getId() == R.id.leftSideBar) {
-                    indicator.setProgress(slideOffset);
-                }
-            }
-        });
     }
-
     private void initComponents() {
         manager = getSupportFragmentManager();
         displayName = findViewById(R.id.displayName);
@@ -98,7 +101,24 @@ public class MainActivity extends AppCompatActivity {
         preferences = getSharedPreferences("user", MODE_PRIVATE);
         drawerLayout = findViewById(R.id.drawerLayout);
         swipeLeft=findViewById(R.id.swipe_icon);
-
+        hideSwipeLeft=new Thread(){
+            @Override
+            public void run() {
+                try
+                {
+                    sleep(10000);
+                }
+                catch (Exception e){}
+                finally {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            swipeLeft.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            }
+        };
     }
 
     private void setLoaders() {
@@ -136,7 +156,9 @@ public class MainActivity extends AppCompatActivity {
                 if (viewLoader.firstRun) {
                     initial_load(fragment);
                     viewLoader.firstRun = false;
+                    hideSwipeLeft.start();
                 } else {
+                    swipeLeft.setVisibility(View.GONE);
                     if (viewLoader.recreate)
                         viewLoader.recreate = false;
                     else
@@ -168,10 +190,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void apply(ViewGroup sideBar, View itemView, float touchY, float slideOffset, boolean isLeft) {
                 boolean hovered = itemView.isPressed();
-                if(slideOffset>0)
-                    swipeLeft.setVisibility(View.GONE);
-                else
-                    swipeLeft.setVisibility(View.VISIBLE);
                 if (hovered && lastHoverView != itemView) {
                     animateIn(itemView);
                     animateOut(lastHoverView);
@@ -227,6 +245,12 @@ public class MainActivity extends AppCompatActivity {
                 else
                     viewLoader.loadView(new Login());
                 break;
+            case R.id.search:
+                Toast.makeText(MainActivity.this,"Under Construction",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.action_notifications:
+                Toast.makeText(MainActivity.this,"Under Construction",Toast.LENGTH_SHORT).show();
+                break;
         }
         return true;
     }
@@ -264,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.order_history:
                 if (isLoggedIn)
-                    Toast.makeText(this, "order history", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Under Construction", Toast.LENGTH_SHORT).show();
                 else
                     viewLoader.loadView(new Login());
                 break;
@@ -282,28 +306,28 @@ public class MainActivity extends AppCompatActivity {
                 viewLoader.loadView(new Home());
                 break;
             case R.id.settings:
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+                viewLoader.loadView(new AccountSettings());
                 break;
             case R.id.rate_app:
-                Toast.makeText(this, "5 star", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Under Construction", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.home:
                 viewLoader.loadView(new Home());
                 break;
             case R.id.formen:
-                Toast.makeText(this, "for men", Toast.LENGTH_SHORT).show();
+                viewLoader.loadView(new Category());
                 break;
             case R.id.forwomen:
-                Toast.makeText(this, "for women", Toast.LENGTH_SHORT).show();
+                viewLoader.loadView(new Category());
                 break;
             case R.id.forkids:
-                Toast.makeText(this, "for kids", Toast.LENGTH_SHORT).show();
+                viewLoader.loadView(new Category());
                 break;
             case R.id.offers:
-                Toast.makeText(this, "Offers", Toast.LENGTH_SHORT).show();
+                viewLoader.loadView(new Category());
                 break;
             case R.id.wishlist:
-                Toast.makeText(this, "wishlist", Toast.LENGTH_SHORT).show();
+                viewLoader.loadView(new Cart_List());
                 break;
         }
     }

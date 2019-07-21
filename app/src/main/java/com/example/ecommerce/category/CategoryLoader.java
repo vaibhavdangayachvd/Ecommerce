@@ -19,30 +19,31 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public final class CategoryLoader extends ViewModel {
-    private ArrayList<CategoryItem> categoryList=new ArrayList<>();
-    private MutableLiveData<Boolean> hasChanges=new MutableLiveData<>();
+    private ArrayList<CategoryItem> categoryList;
+    private MutableLiveData<Boolean> hasChanges;
     private Context context;
     public CategoryLoader(Context context) {
         this.context = context.getApplicationContext();
+        hasChanges=new MutableLiveData<>();
+        categoryList=new ArrayList<>();
         hasChanges.setValue(false);
     }
     public void loadCategories()
     {
-        if(categoryList.isEmpty()) {
-            StringRequest categoryRequest = new StringRequest(StringRequest.Method.GET, URLContract.GET_ALL_CATEGORIES_URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    hasChanges.setValue(parseJSON(response));
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, "Network Error", Toast.LENGTH_SHORT).show();
-                    hasChanges.setValue(false);
-                }
-            });
-            RequestHelper.getInstance(context).addToRequestQueue(categoryRequest);
-        }
+        StringRequest categoryRequest = new StringRequest(StringRequest.Method.GET, URLContract.GET_ALL_CATEGORIES_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                hasChanges.setValue(parseJSON(response));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Network Error", Toast.LENGTH_SHORT).show();
+                hasChanges.setValue(false);
+            }
+        });
+        RequestHelper.getInstance(context).addToRequestQueue(categoryRequest);
+
     }
     public ArrayList<CategoryItem> getCategories()
     {
@@ -64,7 +65,7 @@ public final class CategoryLoader extends ViewModel {
                 hasChanged=true;
                 JSONArray names=obj.getJSONArray("name");
                 JSONArray images=obj.getJSONArray("image");
-                for(int i=0;i<images.length();++i)
+                for(int i=categoryList.size();i<images.length();++i)
                     categoryList.add(new CategoryItem(names.getString(i),images.getString(i)));
             }
         }

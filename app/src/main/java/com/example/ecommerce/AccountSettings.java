@@ -58,6 +58,7 @@ public class AccountSettings extends Fragment {
         View view=inflater.inflate(R.layout.activity_account_settings,container,false);
         initViewComponents(view);
         loadExistingUserData();
+
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

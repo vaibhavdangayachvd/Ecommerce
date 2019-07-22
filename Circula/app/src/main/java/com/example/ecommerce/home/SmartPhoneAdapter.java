@@ -7,9 +7,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ecommerce.Category;
 import com.example.ecommerce.R;
+import com.example.ecommerce.Search;
+import com.example.ecommerce.helper.ViewHelper;
 
 import java.util.List;
 
@@ -19,6 +24,7 @@ import java.util.List;
 public class SmartPhoneAdapter extends RecyclerView.Adapter<SmartPhoneAdapter.MyViewHolder> {
 
     Context context;
+    FragmentActivity activity;
     private List<Favourite> OfferList;
     boolean showingfirst = true;
 
@@ -36,9 +42,10 @@ public class SmartPhoneAdapter extends RecyclerView.Adapter<SmartPhoneAdapter.My
         }
     }
 
-    public SmartPhoneAdapter(Context context, List<Favourite> offerList) {
+    public SmartPhoneAdapter(Context context, List<Favourite> offerList,FragmentActivity activity) {
         this.OfferList = offerList;
         this.context = context;
+        this.activity=activity;
     }
 
     @Override
@@ -58,9 +65,10 @@ public class SmartPhoneAdapter extends RecyclerView.Adapter<SmartPhoneAdapter.My
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                ViewModelProviders.of(activity).get(ViewHelper.class).loadView(new Category());
             }
         });
+
     }
     @Override
     public int getItemCount() {

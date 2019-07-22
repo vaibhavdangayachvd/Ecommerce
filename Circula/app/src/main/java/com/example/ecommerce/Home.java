@@ -34,6 +34,7 @@ public class Home extends Fragment {
     RecyclerView best, category;
     private ArrayList<Favourite> favouriteModelClasses1;
     private ArrayList<Favourite2> favouriteModelClasses2;
+    TextView viewmore;
     TextView search;
 
     @Nullable
@@ -58,12 +59,12 @@ public class Home extends Fragment {
             Favourite beanClassForRecyclerView_contacts = new Favourite(image1[i], title1[i], price1[i]);
             favouriteModelClasses1.add(beanClassForRecyclerView_contacts);
         }
-        bAdapter1 = new SmartPhoneAdapter(getActivity(), favouriteModelClasses1);
+        bAdapter1 = new SmartPhoneAdapter(getActivity(), favouriteModelClasses1,getActivity());
         best.setAdapter(bAdapter1);
 
         //this block is for image slider
         ViewPager mViewPager = v.findViewById(R.id.preview);
-        ImageAdapter adapterView = new ImageAdapter(getActivity());
+        ImageAdapter adapterView = new ImageAdapter(getActivity(),getActivity());
         mViewPager.setAdapter(adapterView);
 
         //category block
@@ -89,5 +90,12 @@ public class Home extends Fragment {
         best = v.findViewById(R.id.smartphone_recyclerview);
         category = v.findViewById(R.id.category);
         search = v.findViewById(R.id.search);
+        viewmore=v.findViewById(R.id.viewmore);
+        viewmore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewModelProviders.of(getActivity()).get(ViewHelper.class).loadView(new Category());
+            }
+        });
     }
 }

@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">Circula</string>
+    <string name="user">User</string>
+    <string name="order_history">Order history</string>
+    <string name="rate_app">Rate app</string>
+    <string name="notifications">Notifications</string>
+    <string name="settings">Settings</string>
+    <string name="for_men">For Men</string>
+    <string name="for_women">For Women</string>
+    <string name="for_kids">For Kids</string>
+    <string name="offers">Offers</string>
+    <string name="cart">Cart</string>
+    <string name="category">Category</string>
+    <string name="account_setting">Edit Profile</string>
+    <string name="wishlist">wishlist</string>
+    <string name="profile">Profile</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="our_categories">Our Categories</string>
+    <string name="home">Home</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="buy_now">Buy Now</string>
+    <string name="select_prompt">Select State</string>
+    <string name="checkout">Checkout</string>
+    <string name="no_result_found">No Result Found</string>
+    <string name="no_address_found">No Address Found</string>
+    <string name="select_address">Select Address</string>
+    <string name="enter_house_number">Enter House Number</string>
+    <string name="enter_pincode">Enter pincode</string>
+    <string name="enter_city">Enter city</string>
+    <string name="enter_locality">Enter Locality</string>
+    <string name="submit">Submit</string>
+    <string name="saved_addressed">Saved Address (Long Press to delete)</string>
+    <string-array name="states">
+        <item>Andhra Pradesh</item>
+        <item>Arunachal Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar</item>
+        <item>Chhattisgarh</item>
+        <item>Delhi</item>
+        <item>Goa</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu and Kashmir</item>
+        <item>Jharkhand</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Madhya Pradesh</item>
+        <item>Maharashtra</item>
+        <item>Manipur</item>
+        <item>Meghalaya</item>
+        <item>Mizoram</item>
+        <item>Nagaland</item>
+        <item>Odisha</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Sikkim</item>
+        <item>Tamil Nadu</item>
+        <item>Telangana</item>
+        <item>Tripura</item>
+        <item>Uttar Pradesh</item>
+        <item>Uttarakhand</item>
+        <item>West Bengal</item>
+    </string-array>
+</resources>

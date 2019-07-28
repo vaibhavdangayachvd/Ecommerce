@@ -71,7 +71,6 @@ public final class CartLoader extends ViewModel {
         };
         RequestHelper.getInstance(context).addToRequestQueue(stringRequest);
     }
-
     private boolean parseAddResponse(String response) {
         boolean flag;
         try {
@@ -134,6 +133,31 @@ public final class CartLoader extends ViewModel {
             flag = false;
         }
         return flag;
+    }
+    public void emptyCart()
+    {
+        SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        final String username = preferences.getString("username", null);
+        StringRequest stringRequest=new StringRequest(StringRequest.Method.POST, URLContract.REMOVE_ALL_PRODUCTS_FROM_CART, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                cartList.clear();
+                hasLoaded.setValue(true);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String>params=new HashMap<>();
+                params.put("username",username);
+                return params;
+            }
+        };
+        RequestHelper.getInstance(context).addToRequestQueue(stringRequest);
     }
     public void removeFromCart(final String productId)
     {

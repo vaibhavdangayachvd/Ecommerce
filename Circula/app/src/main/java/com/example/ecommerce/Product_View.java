@@ -121,6 +121,7 @@ public class Product_View extends Fragment {
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cartLoader.addToCart(item.getId());
                 gotoAddress();
             }
         });

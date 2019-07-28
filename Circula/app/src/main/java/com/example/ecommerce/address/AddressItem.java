@@ -1,6 +1,8 @@
 package com.example.ecommerce.address;
 
-public final class AddressItem {
+import java.io.Serializable;
+
+public final class AddressItem implements Serializable {
     private String address;
     private String id;
     public AddressItem(String id,String address)

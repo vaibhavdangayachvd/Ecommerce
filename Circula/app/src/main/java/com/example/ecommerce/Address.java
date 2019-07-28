@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.ecommerce.address.AddressLoader;
 import com.example.ecommerce.helper.UserLogin;
+import com.example.ecommerce.helper.ViewHelper;
 
 public class Address extends Fragment {
     private ListView addresses;
@@ -126,7 +127,11 @@ public class Address extends Fragment {
         addresses.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(),"Payment Gateway Temporarily Locked",Toast.LENGTH_SHORT).show();
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("address",addressLoader.getLoadedAddresses().get(position));
+                Fragment checkout=new Checkout();
+                checkout.setArguments(bundle);
+                ViewModelProviders.of(getActivity()).get(ViewHelper.class).loadView(checkout);
             }
         });
     }

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,6 +51,7 @@ public final class CartAdaptor extends ArrayAdapter<CartItem> {
             @Override
             public void onClick(View v) {
                 cartLoader.updateCart(item.getId(),"1");
+                Toast.makeText(getContext(),"Adding..",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -58,6 +60,7 @@ public final class CartAdaptor extends ArrayAdapter<CartItem> {
             @Override
             public void onClick(View v) {
                 cartLoader.updateCart(item.getId(),"-1");
+                Toast.makeText(getContext(),"Reducing..",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -66,6 +69,7 @@ public final class CartAdaptor extends ArrayAdapter<CartItem> {
             @Override
             public void onClick(View v) {
                 cartLoader.removeFromCart(item.getId());
+                Toast.makeText(getContext(),"Removing...",Toast.LENGTH_SHORT).show();
             }
         });
 

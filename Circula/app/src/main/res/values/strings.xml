@@ -21,7 +21,6 @@
     <string name="add_to_cart">Add to cart</string>
     <string name="buy_now">Buy Now</string>
     <string name="select_prompt">Select State</string>
-    <string name="checkout">Checkout</string>
     <string name="no_result_found">No Result Found</string>
     <string name="no_address_found">No Address Found</string>
     <string name="select_address">Select Address</string>
@@ -31,6 +30,8 @@
     <string name="enter_locality">Enter Locality</string>
     <string name="submit">Submit</string>
     <string name="saved_addressed">Saved Address (Long Press to delete)</string>
+    <string name="proceed_to_pay">Proceed to Pay</string>
+    <string name="checkout">Checkout</string>
     <string-array name="states">
         <item>Andhra Pradesh</item>
         <item>Arunachal Pradesh</item>
